@@ -58,5 +58,6 @@ enum Step
 
 -(void)presentImagePicker;
 -(void)removeTutorialViewFromMainViewWithAnimation:(NSString *)animation;
+-(void)dismissImagePickerController;
 
 @end

@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FittedSolution/Controllers/MatchesShoesViewController/MatchesShoesViewController.m"
-            timestampString = "497537656.043396"
+            filePath = "FittedSolution/Controllers/MainViewController/MainViewController.m"
+            timestampString = "499610927.63287"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "51"
-            endingLineNumber = "51"
-            landmarkName = "-viewDidLoad"
+            startingLineNumber = "710"
+            endingLineNumber = "710"
+            landmarkName = "-sideFootResponseReceivedFromWindowsServerWithSuccess:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FittedSolution/Controllers/MatchesShoesViewController/MatchesShoesViewController.m"
-            timestampString = "497537974.557399"
+            filePath = "FittedSolution/Controllers/MainViewController/MainViewController.m"
+            timestampString = "499610927.63287"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "171"
-            endingLineNumber = "171"
-            landmarkName = "-createAndLoadViews"
+            startingLineNumber = "703"
+            endingLineNumber = "703"
+            landmarkName = "-sideFootResponseReceivedFromWindowsServerWithSuccess:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,13 +41,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FittedSolution/Controllers/MatchesShoesViewController/MatchesShoesViewController.m"
-            timestampString = "497537974.557399"
+            filePath = "FittedSolution/Controllers/MainViewController/MainViewController.m"
+            timestampString = "499610927.63287"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "194"
-            endingLineNumber = "194"
-            landmarkName = "-createAndLoadViews"
+            startingLineNumber = "647"
+            endingLineNumber = "647"
+            landmarkName = "-uploadSideFootForSegmentation:withSideFootBoundedBox:andPhoneBoundedBox:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -57,13 +57,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FittedSolution/Controllers/MatchesShoesViewController/MatchesShoesViewController.m"
-            timestampString = "497537974.557399"
+            filePath = "FittedSolution/Controllers/MainViewController/MainViewController.m"
+            timestampString = "499610927.63287"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "217"
-            endingLineNumber = "217"
-            landmarkName = "-createAndLoadViews"
+            startingLineNumber = "660"
+            endingLineNumber = "660"
+            landmarkName = "-uploadSideFootForSegmentation:withSideFootBoundedBox:andPhoneBoundedBox:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -73,13 +73,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FittedSolution/Controllers/MatchesShoesViewController/MatchesShoesViewController.m"
-            timestampString = "497538542.617503"
+            filePath = "FittedSolution/Controllers/MainViewController/MainViewController.m"
+            timestampString = "499610927.63287"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "296"
-            endingLineNumber = "296"
-            landmarkName = "-setupHorizontalScrollView:withShoes:"
+            startingLineNumber = "683"
+            endingLineNumber = "683"
+            landmarkName = "-uploadFrontFootForSegmentation:withFrontFootBoundedBox:andPhoneBoundedBox:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -89,13 +89,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FittedSolution/Controllers/MatchesShoesViewController/MatchesShoesViewController.m"
-            timestampString = "497538542.617503"
+            filePath = "FittedSolution/Controllers/MainViewController/MainViewController.m"
+            timestampString = "499610927.63287"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "292"
-            endingLineNumber = "292"
-            landmarkName = "-setupHorizontalScrollView:withShoes:"
+            startingLineNumber = "691"
+            endingLineNumber = "691"
+            landmarkName = "-uploadFrontFootForSegmentation:withFrontFootBoundedBox:andPhoneBoundedBox:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -105,13 +105,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FittedSolution/Controllers/MatchesShoesViewController/MatchesShoesViewController.m"
-            timestampString = "497537974.557399"
+            filePath = "FittedSolution/Controllers/MainViewController/MainViewController.m"
+            timestampString = "499610927.63287"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "265"
-            endingLineNumber = "265"
-            landmarkName = "-setupHorizontalScrollView:withShoes:"
+            startingLineNumber = "599"
+            endingLineNumber = "599"
+            landmarkName = "-validateFrontFootImage:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -121,13 +121,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FittedSolution/Controllers/MatchesShoesViewController/MatchesShoesViewController.m"
-            timestampString = "497538542.617503"
+            filePath = "FittedSolution/Controllers/MainViewController/MainViewController.m"
+            timestampString = "499610927.63287"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "308"
-            endingLineNumber = "308"
-            landmarkName = "-setupHorizontalScrollView:withShoes:"
+            startingLineNumber = "617"
+            endingLineNumber = "617"
+            landmarkName = "-validateFrontFootImage:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -137,13 +137,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FittedSolution/Controllers/MatchesShoesViewController/MatchesShoesViewController.m"
-            timestampString = "497538542.617503"
+            filePath = "FittedSolution/Helper Classes/WindowsWebserviceManager/WindowsWebserviceManager.m"
+            timestampString = "499081196.052934"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "304"
-            endingLineNumber = "304"
-            landmarkName = "-setupHorizontalScrollView:withShoes:"
+            startingLineNumber = "91"
+            endingLineNumber = "91"
+            landmarkName = "-uploadSideFootImageForSegmentation:withSideFootBoundedBox:andPhoneBoundedBox:block:errorMessage:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -153,29 +153,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FittedSolution/Controllers/MatchesShoesViewController/MatchesShoesViewController.m"
-            timestampString = "497538542.617503"
+            filePath = "FittedSolution/Controllers/MainViewController/MainViewController.m"
+            timestampString = "499610927.63287"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "316"
-            endingLineNumber = "316"
-            landmarkName = "-setupHorizontalScrollView:withShoes:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FittedSolution/Controllers/MatchesShoesViewController/MatchesShoesViewController.m"
-            timestampString = "497538542.617503"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "320"
-            endingLineNumber = "320"
-            landmarkName = "-setupHorizontalScrollView:withShoes:"
+            startingLineNumber = "625"
+            endingLineNumber = "625"
+            landmarkName = "-validateFrontFootImage:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

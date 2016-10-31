@@ -238,7 +238,7 @@
     _totalMatchesLabel.text = [NSString stringWithFormat:@"Total Matched Items: %d",totalMatchedItems];
 }
 
-- (NSInteger)randomNumberBetween:(NSInteger)min maxNumber:(NSInteger)max
+- (int)randomNumberBetween:(int)min maxNumber:(int)max
 {
     return min + arc4random_uniform(max - min + 1);
 }

@@ -23,11 +23,19 @@
     UIImage                  * capturedPhoto                                ;
     NSData                   * capturedPhotoData                            ;
     
-    //not being used
+
     BOOL                       isLinuxServerCallForSideFootInProgress       ;
     BOOL                       isLinuxServerCallForFrontFootInProgress      ;
     BOOL                       isWindowsServerCallForSideFootInProgress     ;
     BOOL                       isWindowsServerCallForFrontFootInProgress    ;
+    
+    // new added for new flow (18 oct 2016)
+    BOOL                       isWaitingForSideFootWindowsServerResponse    ;
+    BOOL                       isSideFootErrorAppeared                      ;
+    NSString                 * sideFootErrorString                          ;
+    BoundedBox                 frontFootBoundedBox_Cached                   ;
+    BoundedBox                 frontFootPhoneBoundedBox_Cached              ;
+    NSData                   * frontFootImageData_Cached                    ;
 }
 
 @property (nonatomic, strong) UIView            * tutorialViewContainer             ;
@@ -212,6 +220,25 @@
     imagePicker.cameraFlashMode          = UIImagePickerControllerCameraFlashModeOff;
 }
 
+-(void)dismissImagePickerController
+{
+//    if (imagePicker.isBeingPresented)
+//    {
+//        if([text_to_speech_manager isSpeaking])
+//        {
+//            [text_to_speech_manager stopSpeaking];
+//        }
+//    
+//        [imagePicker dismissViewControllerAnimated:YES completion:^
+//        {
+//            if ([speech_recognition_manager isListening])
+//            {
+//                [self stopListeningClickVoice];
+//            }
+//        }];
+//    }
+}
+
 -(void)presentImagePicker
 {
     switch (step)
@@ -251,7 +278,6 @@
     
     CGAffineTransform translate          = CGAffineTransformMakeTranslation(0.0, 71.0);
     imagePicker.cameraViewTransform      = translate;
-    
     CGAffineTransform scale              = CGAffineTransformScale(translate, 1.333333, 1.333333);
     imagePicker.cameraViewTransform      = scale;
     
@@ -271,6 +297,18 @@
     
     [pickerHeader addSubview:headerImageView];
     [imagePicker.view addSubview:pickerHeader];
+    
+    // adjusting camera view to fullscreen
+//    CGSize screenSize = [[UIScreen mainScreen] bounds].size;
+//    float cameraAspectRatio = 4.0 / 3.0;
+//    float imageWidth = floorf(screenSize.width * cameraAspectRatio);
+//    float scale = ceilf((screenSize.height / imageWidth) * 10.0) / 10.0;
+//    imagePicker.cameraViewTransform = CGAffineTransformMakeScale(scale, scale);
+//    
+//    CGAffineTransform translate          = CGAffineTransformMakeTranslation(0.0, pickerHeader.frame.size.height);
+//    imagePicker.cameraViewTransform      = translate;
+//    CGAffineTransform transform_scale    = CGAffineTransformScale(translate, scale, scale);
+//    imagePicker.cameraViewTransform      = transform_scale;
 }
 
 -(void)presentImagePickerController
@@ -279,6 +317,22 @@
     
     [self presentViewController:imagePicker animated:YES completion:^
     {
+        if ([[app_manager getDeviceiOSVersion] floatValue] >= 10)
+        {
+            [imagePicker setCameraFlashMode:UIImagePickerControllerCameraFlashModeOff];
+            
+//            CGSize screenSize = [[UIScreen mainScreen] bounds].size;
+//            // iOS is going to calculate a size which constrains the 4:3 aspect ratio
+//            // to the screen size. We're basically mimicking that here to determine
+//            // what size the system will likely display the image at on screen.
+//            // NOTE: screenSize.width may seem odd in this calculation - but, remember,
+//            // the devices only take 4:3 images when they are oriented *sideways*.
+//            float cameraAspectRatio = 4.0 / 3.0;
+//            float imageWidth = floorf(screenSize.width * cameraAspectRatio);
+//            float scale = ceilf((screenSize.height / imageWidth) * 10.0) / 10.0;
+//            imagePicker.cameraViewTransform = CGAffineTransformMakeScale(scale, scale);
+        }
+        
         [app_manager stopAnimatingActivityIndicator];
         
         /*
@@ -450,55 +504,59 @@
     isLinuxServerCallForSideFootInProgress = YES;
     
     [linux_webservice_manager validateSideFootImage:sideFootImageData block:^(NSData *data)
-    {
-        isLinuxServerCallForSideFootInProgress = NO;
-        NSLog(@"Linux server,(Side foot) Data%@ ",data);
-        
-        if(!data)
-        {
-            step = StepOneRepeat;
-            [app_manager showAlertWithTitle:@"Error" Message:@"Unable to get response from server. Please retake side foot picture." andAction:PresentImagePicker];
-        }
-        else
-        {
-            [linux_server_response_handler handleResponseForSideFoot:data block:^(NSArray *boxesArray)
-            {
-                BoundedBox footBoundedBox, phoneBoundedBox;
-                
-                NSValue * footBoxValue  = [boxesArray objectAtIndex:0];
-                NSValue * phoneBoxValue = [boxesArray objectAtIndex:1];
-                
-                [footBoxValue getValue:&footBoundedBox];
-                [phoneBoxValue getValue:&phoneBoundedBox];
-                
-                // draw bounded box on original image of side foot
-                [app_manager drawBoxesOnImage:capturedPhoto withFootBoundedBox:footBoundedBox andPhoneBoundedBox:phoneBoundedBox];
-                
-                // crop foot and save for result screen
-                CGRect sideFootRect = CGRectMake(footBoundedBox.x, footBoundedBox.y, footBoundedBox.w, footBoundedBox.h);
-                [self cropImage:capturedPhoto withRect:sideFootRect forFoot:@"side"];
-                
-                // show alert
-                [app_manager showMeasuredPopup];
-                
-                //upload side foot image with boundedbox for segmentation
-                [self uploadSideFootForSegmentation:sideFootImageData withSideFootBoundedBox:footBoundedBox andPhoneBoundedBox:phoneBoundedBox];
-            }
-            errorMessage:^(NSString * errorString)
-            {
-                NSLog(@"Linux server,(Side foot) Error %@ ",errorString);
-                step              = StepOneRepeat;
-                NSString *message = [NSString stringWithFormat:@"%@. Please retake side foot picture.",errorString];
-                [app_manager showAlertWithTitle:@"" Message:message andAction:PresentImagePicker];
-            }];
-        }
-    }
-    errorMessage:^(NSError *error)
-    {
-        NSLog(@"Linux server,(Side foot) Error%@ ",error);
-        isLinuxServerCallForSideFootInProgress = NO;
-        [app_manager handleError:error];
-    }];
+     {
+         isLinuxServerCallForSideFootInProgress = NO;
+         NSLog(@"Linux server,(Side foot) Data%@ ",data);
+         
+         if(!data)
+         {
+             step = StepOneRepeat;
+             [app_manager showAlertWithTitle:@"Error" Message:@"Unable to get response from server. Please retake side foot picture." andAction:PresentImagePicker];
+         }
+         else
+         {
+             [linux_server_response_handler handleResponseForSideFoot:data block:^(NSArray *boxesArray)
+              {
+                  BoundedBox footBoundedBox, phoneBoundedBox;
+                  
+                  NSValue * footBoxValue  = [boxesArray objectAtIndex:0];
+                  NSValue * phoneBoxValue = [boxesArray objectAtIndex:1];
+                  
+                  [footBoxValue getValue:&footBoundedBox];
+                  [phoneBoxValue getValue:&phoneBoundedBox];
+                  
+                  // draw bounded box on original image of side foot
+                  [app_manager drawBoxesOnImage:capturedPhoto withFootBoundedBox:footBoundedBox andPhoneBoundedBox:phoneBoundedBox];
+                  
+                  // crop foot and save for result screen
+                  CGRect sideFootRect = CGRectMake(footBoundedBox.x, footBoundedBox.y, footBoundedBox.w, footBoundedBox.h);
+                  [self cropImage:capturedPhoto withRect:sideFootRect forFoot:@"side"];
+                  
+                  // show alert
+                  [app_manager showMeasuredPopup];
+                  
+                  //upload side foot image with boundedbox for segmentation
+                  [self uploadSideFootForSegmentation:sideFootImageData withSideFootBoundedBox:footBoundedBox andPhoneBoundedBox:phoneBoundedBox];
+                  
+                  // go to step two
+                  step = StepTwo;
+                  [self presentImagePicker];
+              }
+              errorMessage:^(NSString * errorString)
+              {
+                  NSLog(@"Linux server,(Side foot) Error %@ ",errorString);
+                  step              = StepOneRepeat;
+                  NSString *message = [NSString stringWithFormat:@"%@ Please retake side foot picture.",errorString];
+                  [app_manager showAlertWithTitle:@"" Message:message andAction:PresentImagePicker];
+              }];
+         }
+     }
+     errorMessage:^(NSError *error)
+     {
+         NSLog(@"Linux server,(Side foot) Error%@ ",error);
+         isLinuxServerCallForSideFootInProgress = NO;
+         [app_manager handleError:error];
+     }];
 }
 
 -(void)validateFrontFootImage:(NSData *)frontFootImageData
@@ -536,21 +594,44 @@
                   // show alert
                   [app_manager showMeasuredPopup];
                   
-                  //upload front foot image with boundedbox for segmentation
-                  [self uploadFrontFootForSegmentation:frontFootImageData withFrontFootBoundedBox:footBoundedBox andPhoneBoundedBox:phoneBoundedBox];
+                  if (!isWindowsServerCallForSideFootInProgress)
+                  {
+                      isWaitingForSideFootWindowsServerResponse = NO;
+                      
+                      if (!isSideFootErrorAppeared)
+                      {
+                          //upload front foot image with boundedbox for segmentation
+                          [self uploadFrontFootForSegmentation:frontFootImageData withFrontFootBoundedBox:footBoundedBox andPhoneBoundedBox:phoneBoundedBox];
+                      }
+                      else
+                      {
+                          if (step != StepOneRepeat)
+                          {
+                              step = StepOneRepeat;
+                              [app_manager showAlertWithTitle:@"Side Foot Segmentation Error" Message:sideFootErrorString andAction:PresentImagePicker];
+                          }
+                      }
+                  }
+                  else
+                  {
+                      isWaitingForSideFootWindowsServerResponse = YES;
+                      frontFootBoundedBox_Cached                = footBoundedBox;
+                      frontFootPhoneBoundedBox_Cached           = phoneBoundedBox;
+                      frontFootImageData_Cached                 = frontFootImageData;
+                  }
               }
               errorMessage:^(NSString * errorString)
               {
-                  NSLog(@"Linux server,(Front foot) Error %@ ",errorString);
+                  NSLog(@"Linux server,(Front foot) Error: %@ ",errorString);
                   step               = StepTwoRepeat;
-                  NSString * message = [NSString stringWithFormat:@"%@. Please retake front foot picture.",errorString];
+                  NSString * message = [NSString stringWithFormat:@"%@ Please retake front foot picture.",errorString];
                   [app_manager showAlertWithTitle:@"" Message:message andAction:PresentImagePicker];
               }];
          }
      }
      errorMessage:^(NSError *error)
      {
-         NSLog(@"Linux server,(Front foot) Error%@ ",error);
+         NSLog(@"Linux server,(Front foot) Error: %@ ",error);
          isLinuxServerCallForFrontFootInProgress = NO;
          [app_manager handleError:error];
      }];
@@ -560,24 +641,32 @@
 {
     isWindowsServerCallForSideFootInProgress = YES;
     [windows_webservice_manager uploadSideFootImageForSegmentation:sideFootImageData withSideFootBoundedBox:sideFootBox andPhoneBoundedBox:phoneBox block:^(FootDescription *footDescription)
-    {
-        isWindowsServerCallForSideFootInProgress = NO;
-        _sideFootDescription                     = footDescription;
-        step                                     = StepTwo;
-        [self presentImagePicker];
-    }
-    errorMessage:^(NSString *error)
-    {
-        isWindowsServerCallForSideFootInProgress = NO;
-    
-        step = StepOneRepeat;
-        
-        if (error.length > 0)
-        {
-            NSString * errorMessage = [NSString stringWithFormat:@"%@. Please retake side foot picture.",error];
-            [app_manager showAlertWithTitle:@"" Message:errorMessage andAction:PresentImagePicker];
-        }
-    }];
+     {
+         isWindowsServerCallForSideFootInProgress = NO;
+         isSideFootErrorAppeared                  = NO;
+         _sideFootDescription                     = footDescription;
+         
+         //step                                     = StepTwo;
+         //[self presentImagePicker];
+         
+         [self sideFootResponseReceivedFromWindowsServerWithSuccess:YES];
+     }
+     errorMessage:^(NSString *error)
+     {
+         isWindowsServerCallForSideFootInProgress = NO;
+         isSideFootErrorAppeared = YES;
+         sideFootErrorString     = error;
+         
+         [self sideFootResponseReceivedFromWindowsServerWithSuccess:NO];
+         
+         //         step = StepOneRepeat;
+         //
+         //         if (error.length > 0)
+         //         {
+         //             NSString * errorMessage = [NSString stringWithFormat:@"%@. Please retake side foot picture.",error];
+         //             [app_manager showAlertWithTitle:@"" Message:errorMessage andAction:PresentImagePicker];
+         //         }
+     }];
 }
 
 -(void)uploadFrontFootForSegmentation:(NSData *)frontFootImageData withFrontFootBoundedBox:(BoundedBox)frontFootBox andPhoneBoundedBox:(BoundedBox)phoneBox
@@ -606,6 +695,187 @@
          }
      }];
 }
+
+-(void)sideFootResponseReceivedFromWindowsServerWithSuccess:(BOOL)success
+{
+    if (success)
+    {
+        if (isWaitingForSideFootWindowsServerResponse)
+        {
+            [self uploadFrontFootForSegmentation:frontFootImageData_Cached withFrontFootBoundedBox:frontFootBoundedBox_Cached andPhoneBoundedBox:frontFootPhoneBoundedBox_Cached];
+        }
+    }
+    else
+    {
+        step = StepOneRepeat;
+        [app_manager showAlertWithTitle:@"Side Foot Segmentation Error" Message:sideFootErrorString andAction:PresentImagePicker];
+    }
+    isWaitingForSideFootWindowsServerResponse = NO;
+}
+
+////////
+
+//-(void)validateSideFootImage:(NSData *)sideFootImageData
+//{
+//    isLinuxServerCallForSideFootInProgress = YES;
+//    
+//    [linux_webservice_manager validateSideFootImage:sideFootImageData block:^(NSData *data)
+//    {
+//        isLinuxServerCallForSideFootInProgress = NO;
+//        NSLog(@"Linux server,(Side foot) Data%@ ",data);
+//        
+//        if(!data)
+//        {
+//            step = StepOneRepeat;
+//            [app_manager showAlertWithTitle:@"Error" Message:@"Unable to get response from server. Please retake side foot picture." andAction:PresentImagePicker];
+//        }
+//        else
+//        {
+//            [linux_server_response_handler handleResponseForSideFoot:data block:^(NSArray *boxesArray)
+//            {
+//                BoundedBox footBoundedBox, phoneBoundedBox;
+//                
+//                NSValue * footBoxValue  = [boxesArray objectAtIndex:0];
+//                NSValue * phoneBoxValue = [boxesArray objectAtIndex:1];
+//                
+//                [footBoxValue getValue:&footBoundedBox];
+//                [phoneBoxValue getValue:&phoneBoundedBox];
+//                
+//                // draw bounded box on original image of side foot
+//                [app_manager drawBoxesOnImage:capturedPhoto withFootBoundedBox:footBoundedBox andPhoneBoundedBox:phoneBoundedBox];
+//                
+//                // crop foot and save for result screen
+//                CGRect sideFootRect = CGRectMake(footBoundedBox.x, footBoundedBox.y, footBoundedBox.w, footBoundedBox.h);
+//                [self cropImage:capturedPhoto withRect:sideFootRect forFoot:@"side"];
+//                
+//                // show alert
+//                [app_manager showMeasuredPopup];
+//                
+//                //upload side foot image with boundedbox for segmentation
+//                [self uploadSideFootForSegmentation:sideFootImageData withSideFootBoundedBox:footBoundedBox andPhoneBoundedBox:phoneBoundedBox];
+//            }
+//            errorMessage:^(NSString * errorString)
+//            {
+//                NSLog(@"Linux server,(Side foot) Error %@ ",errorString);
+//                step              = StepOneRepeat;
+//                NSString *message = [NSString stringWithFormat:@"%@. Please retake side foot picture.",errorString];
+//                [app_manager showAlertWithTitle:@"" Message:message andAction:PresentImagePicker];
+//            }];
+//        }
+//    }
+//    errorMessage:^(NSError *error)
+//    {
+//        NSLog(@"Linux server,(Side foot) Error%@ ",error);
+//        isLinuxServerCallForSideFootInProgress = NO;
+//        [app_manager handleError:error];
+//    }];
+//}
+//
+//-(void)validateFrontFootImage:(NSData *)frontFootImageData
+//{
+//    isLinuxServerCallForFrontFootInProgress = YES;
+//    
+//    [linux_webservice_manager validateFrontFootImage:frontFootImageData block:^(NSData *data)
+//     {
+//         isLinuxServerCallForFrontFootInProgress = NO;
+//         
+//         if(!data)
+//         {
+//             step = StepTwoRepeat;
+//             [app_manager showAlertWithTitle:@"Error" Message:@"Unable to get response from server. Please retake front foot picture." andAction:PresentImagePicker];
+//         }
+//         else
+//         {
+//             [linux_server_response_handler handleResponseForFrontFoot:data block:^(NSArray *boxesArray)
+//              {
+//                  BoundedBox footBoundedBox, phoneBoundedBox;
+//                  
+//                  NSValue * footBoxValue  = [boxesArray objectAtIndex:0];
+//                  NSValue * phoneBoxValue = [boxesArray objectAtIndex:1];
+//                  
+//                  [footBoxValue getValue:&footBoundedBox];
+//                  [phoneBoxValue getValue:&phoneBoundedBox];
+//                  
+//                  // draw bounded box on original image of front foot
+//                  [app_manager drawBoxesOnImage:capturedPhoto withFootBoundedBox:footBoundedBox andPhoneBoundedBox:phoneBoundedBox];
+//                  
+//                  // crop foot and save
+//                  CGRect sideFootRect = CGRectMake(footBoundedBox.x, footBoundedBox.y, footBoundedBox.w, footBoundedBox.h);
+//                  [self cropImage:capturedPhoto withRect:sideFootRect forFoot:@"front"];
+//                  
+//                  // show alert
+//                  [app_manager showMeasuredPopup];
+//                  
+//                  //upload front foot image with boundedbox for segmentation
+//                  [self uploadFrontFootForSegmentation:frontFootImageData withFrontFootBoundedBox:footBoundedBox andPhoneBoundedBox:phoneBoundedBox];
+//              }
+//              errorMessage:^(NSString * errorString)
+//              {
+//                  NSLog(@"Linux server,(Front foot) Error %@ ",errorString);
+//                  step               = StepTwoRepeat;
+//                  NSString * message = [NSString stringWithFormat:@"%@. Please retake front foot picture.",errorString];
+//                  [app_manager showAlertWithTitle:@"" Message:message andAction:PresentImagePicker];
+//              }];
+//         }
+//     }
+//     errorMessage:^(NSError *error)
+//     {
+//         NSLog(@"Linux server,(Front foot) Error%@ ",error);
+//         isLinuxServerCallForFrontFootInProgress = NO;
+//         [app_manager handleError:error];
+//     }];
+//}
+
+//-(void)uploadSideFootForSegmentation:(NSData *)sideFootImageData withSideFootBoundedBox:(BoundedBox)sideFootBox andPhoneBoundedBox:(BoundedBox)phoneBox
+//{
+//    isWindowsServerCallForSideFootInProgress = YES;
+//    [windows_webservice_manager uploadSideFootImageForSegmentation:sideFootImageData withSideFootBoundedBox:sideFootBox andPhoneBoundedBox:phoneBox block:^(FootDescription *footDescription)
+//    {
+//        isWindowsServerCallForSideFootInProgress = NO;
+//        _sideFootDescription                     = footDescription;
+//        step                                     = StepTwo;
+//        [self presentImagePicker];
+//    }
+//    errorMessage:^(NSString *error)
+//    {
+//        isWindowsServerCallForSideFootInProgress = NO;
+//    
+//        step = StepOneRepeat;
+//        
+//        if (error.length > 0)
+//        {
+//            NSString * errorMessage = [NSString stringWithFormat:@"%@. Please retake side foot picture.",error];
+//            [app_manager showAlertWithTitle:@"" Message:errorMessage andAction:PresentImagePicker];
+//        }
+//    }];
+//}
+//
+//-(void)uploadFrontFootForSegmentation:(NSData *)frontFootImageData withFrontFootBoundedBox:(BoundedBox)frontFootBox andPhoneBoundedBox:(BoundedBox)phoneBox
+//{
+//    NSString * sideID   = _sideFootDescription.sideID;
+//    NSString * resultID = _sideFootDescription.resultID;
+//    
+//    isWindowsServerCallForFrontFootInProgress = YES;
+//    [windows_webservice_manager uploadFrontFootImageForSegmentation:frontFootImageData withFrontFootBoundedBox:frontFootBox phoneBoundedBox:phoneBox sideID:sideID andResultID:resultID block:^(FootDescription *footDescription)
+//     {
+//         isWindowsServerCallForFrontFootInProgress = NO;
+//         _frontFootDescription                     = footDescription;
+//         
+//         if ([self shouldPushResultViewController])
+//         {
+//             [self pushResultViewController];
+//         }
+//     }
+//     errorMessage:^(NSString *error)
+//     {
+//         isWindowsServerCallForFrontFootInProgress = NO;
+//         if (error.length > 0)
+//         {
+//             step = StepTwoRepeat;
+//             [app_manager showAlertWithTitle:@"Front Foot Error!" Message:error andAction:PresentImagePicker];
+//         }
+//     }];
+//}
 
 -(BOOL)shouldPushResultViewController
 {

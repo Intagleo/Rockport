@@ -384,6 +384,48 @@
     return YES;
 }
 
+-(void)showAlertWithTitle:(NSString *)title andMessage:(NSString *)message
+{
+    dispatch_async(dispatch_get_main_queue(), ^
+       {
+           if ([self text:message containsString:@"no device detected"])
+           {
+               [text_to_speech_manager readText:@"please ensure that your cell phone is not covered up and it is inside the phone grid outlines" afterDelay:0.0];
+           }
+           else
+           {
+               [text_to_speech_manager readText:@"please ensure that your feet is inside the feet grid outlines" afterDelay:0.0];
+           }
+           
+           if ([[self getDeviceiOSVersion] floatValue] < 8.0)
+           {
+               UIAlertView * alert = [[UIAlertView alloc] initWithTitle:title
+                                                                message:message
+                                                               delegate:self
+                                                      cancelButtonTitle:nil
+                                                      otherButtonTitles:@"Ok",nil];
+               [alert show];
+           }
+           else
+           {
+               UIAlertController * alert       = [UIAlertController
+                                                  alertControllerWithTitle:title
+                                                  message:message
+                                                  preferredStyle:UIAlertControllerStyleAlert];
+               
+               UIAlertAction     * okButton    = [UIAlertAction
+                                                  actionWithTitle:@"Ok"
+                                                  style:UIAlertActionStyleDefault
+                                                  handler:^(UIAlertAction * action)
+                                                  {
+                                                      [self closeAlertViewWithOutAction];
+                                                  }];
+               [alert addAction:okButton];
+               [self.rootViewController presentViewController:alert animated:YES completion:nil];
+           }
+       });
+}
+
 -(void)showAlertWithTitle:(NSString *)title Message:(NSString *)message andAction:(NSString *)okAction
 {
     dispatch_async(dispatch_get_main_queue(), ^
@@ -505,6 +547,7 @@
     
     self.rootViewController.resetButton.hidden  = YES;
     self.rootViewController.step                = StepOne;
+    //[self.rootViewController dismissImagePickerController];
     [text_to_speech_manager readText:@"welcome to fitted solution, tap on info for app instructions." afterDelay:0.1];
 }
 

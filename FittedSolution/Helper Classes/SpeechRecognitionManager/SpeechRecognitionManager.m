@@ -75,6 +75,11 @@
     [[OEPocketsphinxController sharedInstance] stopListening];
 }
 
+-(BOOL)isListening
+{
+    return [OEPocketsphinxController sharedInstance].isListening;
+}
+
 #pragma mark - OEEventsObserverDelegate
 
 - (void) pocketsphinxDidReceiveHypothesis:(NSString *)hypothesis recognitionScore:(NSString *)recognitionScore utteranceID:(NSString *)utteranceID
