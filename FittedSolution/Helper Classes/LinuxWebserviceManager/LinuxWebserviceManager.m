@@ -19,9 +19,14 @@
 // @"http://45.55.156.47:5060/detect_front"
 
 
+//intagleo new
+//#define Linux_SideFoot_URL @"http://35.160.0.102/detect_side.php"
+//#define Linux_FronFoot_URL @"http://35.160.0.102/detect_front.php"
 
-#define Linux_SideFoot_URL @"http://35.160.0.102/detect_side.php"  //client @"http://198.199.89.153:5060/detect_side"
-#define Linux_FronFoot_URL @"http://35.160.0.102/detect_front.php" //client @"http://198.199.89.153:5060/detect_front"
+
+//client old
+#define Linux_SideFoot_URL @"http://198.199.89.153:5060/detect_side"
+#define Linux_FronFoot_URL @"http://198.199.89.153:5060/detect_front"
 
 @interface LinuxWebserviceManager()
 {
