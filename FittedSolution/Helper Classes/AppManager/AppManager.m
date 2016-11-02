@@ -22,6 +22,7 @@
 {
     UIActivityIndicatorView  * activity;
     NSString                 * actionString;
+    BOOL                       resetButtonTapped;
 }
 @end
 
@@ -518,6 +519,12 @@
 
 -(void)handleError:(NSError *)error
 {
+    if (resetButtonTapped)
+    {
+        resetButtonTapped = NO;
+        return;
+    }
+    
     if (error.code == -1009)
     {
         [self showAlertForInternetErrorWithTitle:@"Internet Connection Error" Message:@"The Internet connection appears to be offline. Please connect to the internet and then try again."];
@@ -542,6 +549,8 @@
 
 -(void)resetApp
 {
+    resetButtonTapped = YES;
+    
     [linux_webservice_manager   cancelAllRunningTasks];
     [windows_webservice_manager cancelAllRunningTasks];
     

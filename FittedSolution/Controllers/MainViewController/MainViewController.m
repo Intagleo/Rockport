@@ -32,7 +32,9 @@
     // new added for new flow (18 oct 2016)
     BOOL                       isWaitingForSideFootWindowsServerResponse    ;
     BOOL                       isSideFootErrorAppeared                      ;
+    BOOL                       isFrontFootErrorAppeared                     ;
     NSString                 * sideFootErrorString                          ;
+    NSString                 * frontFootErrorString                         ;
     BoundedBox                 frontFootBoundedBox_Cached                   ;
     BoundedBox                 frontFootPhoneBoundedBox_Cached              ;
     NSData                   * frontFootImageData_Cached                    ;
@@ -151,6 +153,16 @@
         [app_manager startAnimatingActivityIndicator];
     
         UIImage * imageTaken      = [app_manager fixRotation:[info objectForKey:UIImagePickerControllerOriginalImage]];
+        
+//        if (step == StepOne || step == StepOneRepeat) {
+//            imageTaken      = [UIImage imageNamed:@"0.jpg"];
+//        }
+//        else
+//        {
+//            imageTaken      = [UIImage imageNamed:@"frontFoot1.jpg"];
+//        }
+        
+        
         capturedPhoto             = [app_manager compressImage:imageTaken];
         capturedPhotoData         = [app_manager addPhoneModelAndNameToImageMetaData:capturedPhoto];
         
@@ -600,6 +612,9 @@
                       
                       if (!isSideFootErrorAppeared)
                       {
+                          // show alert
+                          //[app_manager showMeasuredPopup];
+                          
                           //upload front foot image with boundedbox for segmentation
                           [self uploadFrontFootForSegmentation:frontFootImageData withFrontFootBoundedBox:footBoundedBox andPhoneBoundedBox:phoneBoundedBox];
                       }
@@ -623,9 +638,15 @@
               errorMessage:^(NSString * errorString)
               {
                   NSLog(@"Linux server,(Front foot) Error: %@ ",errorString);
-                  step               = StepTwoRepeat;
-                  NSString * message = [NSString stringWithFormat:@"%@ Please retake front foot picture.",errorString];
-                  [app_manager showAlertWithTitle:@"" Message:message andAction:PresentImagePicker];
+                  
+                  isFrontFootErrorAppeared = YES;
+                  frontFootErrorString = errorString;
+                  if (!isWindowsServerCallForSideFootInProgress && !isSideFootErrorAppeared)
+                  {
+                      step               = StepTwoRepeat;
+                      NSString * message = [NSString stringWithFormat:@"%@ Please retake front foot picture.",errorString];
+                      [app_manager showAlertWithTitle:@"" Message:message andAction:PresentImagePicker];
+                  }
               }];
          }
      }
@@ -703,6 +724,12 @@
         if (isWaitingForSideFootWindowsServerResponse)
         {
             [self uploadFrontFootForSegmentation:frontFootImageData_Cached withFrontFootBoundedBox:frontFootBoundedBox_Cached andPhoneBoundedBox:frontFootPhoneBoundedBox_Cached];
+        }
+        else if (isFrontFootErrorAppeared)
+        {
+            step               = StepTwoRepeat;
+            NSString * message = [NSString stringWithFormat:@"%@ Please retake front foot picture.",frontFootErrorString];
+            [app_manager showAlertWithTitle:@"" Message:message andAction:PresentImagePicker];
         }
     }
     else
