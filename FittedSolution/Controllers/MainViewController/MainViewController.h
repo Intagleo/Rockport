@@ -11,7 +11,7 @@
 
 
 @interface MainViewController : UIViewController <UINavigationControllerDelegate,UIImagePickerControllerDelegate,SpeechRecognitionManagerDelegate>
-
+        
 enum Step
 {
     StepOne        ,
@@ -24,9 +24,20 @@ enum Step
 
 /*
  *
+ *  Segment Outlet and Action
+ *
+ */
+
+@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
+- (IBAction)segmentDidChange:(UISegmentedControl *)sender;
+
+/*
+ *
  *  Button Outlets and Actions
  *
  */
+@property (weak, nonatomic) IBOutlet UIButton * menuButton;
+@property (weak, nonatomic) IBOutlet UIButton * infoButton;
 
 - (IBAction)menuButtonAction:(id)sender     ;
 - (IBAction)infoButtonAction:(id)sender     ;

@@ -868,11 +868,11 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Muhammad Khabbab (S9M45XJ475)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Muhammad Khabbab (S9M45XJ475)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Fitted Solutions, LLC";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Fitted Solutions, LLC";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = FV3DMBKSMA;
+				DEVELOPMENT_TEAM = LTU84WB6VE;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -892,7 +892,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "d876d672-e2cd-4c31-bdca-a26a85c3ae91";
+				PROVISIONING_PROFILE = "3ef1d406-9409-42cb-b0b0-edfabad4d7d1";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -915,11 +915,11 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Muhammad Khabbab (S9M45XJ475)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Muhammad Khabbab (S9M45XJ475)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Fitted Solutions, LLC";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Fitted Solutions, LLC";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = FV3DMBKSMA;
+				DEVELOPMENT_TEAM = LTU84WB6VE;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -932,7 +932,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "d876d672-e2cd-4c31-bdca-a26a85c3ae91";
+				PROVISIONING_PROFILE = "3ef1d406-9409-42cb-b0b0-edfabad4d7d1";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -956,7 +956,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.intagleo.rockport;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d876d672-e2cd-4c31-bdca-a26a85c3ae91";
+				PROVISIONING_PROFILE = "985ad616-541d-4634-9c42-0c372d0c5078";
 				PROVISIONING_PROFILE_SPECIFIER = WildCard_DevelopmentProvisioningProfile;
 			};
 			name = Debug;
@@ -979,7 +979,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.intagleo.rockport;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d876d672-e2cd-4c31-bdca-a26a85c3ae91";
+				PROVISIONING_PROFILE = "985ad616-541d-4634-9c42-0c372d0c5078";
 				PROVISIONING_PROFILE_SPECIFIER = WildCard_DevelopmentProvisioningProfile;
 			};
 			name = Release;

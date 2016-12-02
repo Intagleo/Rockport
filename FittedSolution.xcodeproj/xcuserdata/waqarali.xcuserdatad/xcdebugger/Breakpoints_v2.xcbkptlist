@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FittedSolution/Controllers/MainViewController/MainViewController.m"
-            timestampString = "499694733.122793"
+            filePath = "FittedSolution/Helper Classes/LinuxWebserviceManager/LinuxWebserviceManager.m"
+            timestampString = "502373487.159555"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "646"
-            endingLineNumber = "646"
-            landmarkName = "-validateFrontFootImage:"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
+            landmarkName = "-validateSideFootImage:andFrontFootImage:block:errorMessage:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +25,45 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FittedSolution/Controllers/MainViewController/MainViewController.m"
-            timestampString = "499694742.321788"
+            filePath = "FittedSolution/Helper Classes/LinuxWebserviceManager/LinuxWebserviceManager.m"
+            timestampString = "502373600.481101"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "730"
-            endingLineNumber = "730"
-            landmarkName = "-sideFootResponseReceivedFromWindowsServerWithSuccess:"
+            startingLineNumber = "108"
+            endingLineNumber = "108"
+            landmarkName = "-validateSideFootImage:andFrontFootImage:block:errorMessage:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FittedSolution/Helper Classes/LinuxWebserviceManager/LinuxWebserviceManager.m"
+            timestampString = "502373601.953065"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "112"
+            endingLineNumber = "112"
+            landmarkName = "-validateSideFootImage:andFrontFootImage:block:errorMessage:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FittedSolution/Helper Classes/LinuxWebserviceManager/LinuxWebserviceManager.m"
+            timestampString = "502374151.873073"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "79"
+            endingLineNumber = "79"
+            landmarkName = "-validateSideFootImage:andFrontFootImage:block:errorMessage:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

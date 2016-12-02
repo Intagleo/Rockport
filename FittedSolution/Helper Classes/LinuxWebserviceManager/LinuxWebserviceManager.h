@@ -13,7 +13,13 @@
 
 @interface LinuxWebserviceManager : NSObject
 
+@property(nonatomic,assign) BOOL isHaar;
+
 +(LinuxWebserviceManager *)sharedInstance;
+
+
+-(void)validateSideFootImage:(NSData *)sideFootImageData andFrontFootImage:(NSData *)frontFootImageData block:(void (^)(NSData *responseData))responseData errorMessage:(void(^)(NSError * error))error;
+
 
 -(void)validateSideFootImage:(NSData *)sideFootImageData block:(void (^)(NSData *responseData))res errorMessage:(void(^)(NSError * error)) err     ;
 -(void)validateFrontFootImage:(NSData *)frontFootImageData block:(void (^)(NSData *responseData))res errorMessage:(void(^)(NSError * error)) err   ;

@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "UIImage+Resize.h"
 #import "AppManager.h"
+#import "LinuxWebserviceManager.h"
 
 #define linux_server_response_handler [LinuxServerResponseHandler sharedInstance]
 

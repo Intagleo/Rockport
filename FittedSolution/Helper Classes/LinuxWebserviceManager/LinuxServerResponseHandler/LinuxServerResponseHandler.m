@@ -24,200 +24,209 @@
 
 -(void)handleResponseForSideFoot:(NSData *)responseData block:(void (^)(NSArray *ba))boundedBoxArray errorMessage:(void(^)(NSString *))error
 {
-    // intagleo new response handler
-//    NSError      * _error;
-//    NSDictionary * toDict         = [XMLReader dictionaryForXMLData:responseData options:XMLReaderOptionsProcessNamespaces error:&_error];
-//    NSString     * code           = [[[toDict objectForKey:@"data"] objectForKey:@"Code"] objectForKey:@"text"];
-//    
-//    NSLog(@"Side foot dict:\n %@",toDict);
-//    
-//    if ([code intValue] <= 0)
-//    {
-//        error([[[toDict objectForKey:@"data"] objectForKey:@"Error"] objectForKey:@"text"]);
-//    }
-//    else if ([code intValue] == 1)
-//    {
-//        error(@"No bounding box for device received.");
-//    }
-//    else if ([code intValue] == 2)
-//    {
-//        error(@"No bounding box for side foot received.");
-//    }
-//    else if ([code intValue] == 3)
-//    {
-//        BoundedBox footBox, phoneBox;
-//        
-//        footBox.x                = [[[[[toDict objectForKey:@"data"] objectForKey:@"FootBox"] objectForKey:@"pointX"] objectForKey:@"text"] intValue];
-//        footBox.y                = [[[[[toDict objectForKey:@"data"] objectForKey:@"FootBox"] objectForKey:@"pointY"] objectForKey:@"text"] intValue];
-//        footBox.w                = [[[[[toDict objectForKey:@"data"] objectForKey:@"FootBox"] objectForKey:@"width" ] objectForKey:@"text"] intValue];
-//        footBox.h                = [[[[[toDict objectForKey:@"data"] objectForKey:@"FootBox"] objectForKey:@"height"] objectForKey:@"text"] intValue];
-//        
-//        NSValue * footBoxObject  = [NSValue valueWithBytes:&footBox objCType:@encode(BoundedBox)];
-//        
-//        phoneBox.x               = [[[[[toDict objectForKey:@"data"] objectForKey:@"PhoneBox"] objectForKey:@"pointX"] objectForKey:@"text"] intValue];
-//        phoneBox.y               = [[[[[toDict objectForKey:@"data"] objectForKey:@"PhoneBox"] objectForKey:@"pointY"] objectForKey:@"text"] intValue];
-//        phoneBox.w               = [[[[[toDict objectForKey:@"data"] objectForKey:@"PhoneBox"] objectForKey:@"width" ] objectForKey:@"text"] intValue];
-//        phoneBox.h               = [[[[[toDict objectForKey:@"data"] objectForKey:@"PhoneBox"] objectForKey:@"height"] objectForKey:@"text"] intValue];
-//        
-//        NSValue * phoneBoxObject = [NSValue valueWithBytes:&phoneBox objCType:@encode(BoundedBox)];
-//        
-//        NSArray * boxesArray     = [NSArray arrayWithObjects:footBoxObject,phoneBoxObject, nil];
-//        boundedBoxArray(boxesArray);
-//    }
-//    else
-//    {
-//        error(@"Side Foot image seems invalid");
-//    }
-
-    // client old response handler
-    NSString     * responseString = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
-    NSDictionary * toDict         = [self parseServerResponseFromString:responseString];
-    
-    if (!responseString)
+    if (linux_webservice_manager.isHaar)
     {
-        error(@"Nil");
-        return;
-    }
-
-    if ([[toDict objectForKey:@"code"] intValue] <= 0)
-    {
-        error([toDict objectForKey:@"error"]);
-    }
-    else if ([[toDict objectForKey:@"code"] intValue] == 1)
-    {
-        error(@"No bounding box for device received");
-    }
-    else if ([[toDict objectForKey:@"code"] intValue] == 2)
-    {
-        error(@"No bounding box for side foot received");
-    }
-    else if ([[toDict objectForKey:@"code"] intValue] == 3)
-    {
-        BoundedBox footBox, phoneBox;
+        // client old response handler
+        NSString     * responseString = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
+        NSDictionary * toDict         = [self parseServerResponseFromString:responseString];
         
-        NSArray * footBoxArray   = [toDict objectForKey:@"footBoundedBox"];
-        NSArray * phoneBoxArray  = [toDict objectForKey:@"phoneBoundedBox"];
+        if (!responseString)
+        {
+            error(@"Nil");
+            return;
+        }
         
-        footBox.x                = [[footBoxArray objectAtIndex:0] intValue];
-        footBox.y                = [[footBoxArray objectAtIndex:1] intValue];
-        footBox.w                = [[footBoxArray objectAtIndex:2] intValue];
-        footBox.h                = [[footBoxArray objectAtIndex:3] intValue];
-        
-        NSValue * footBoxObject  = [NSValue valueWithBytes:&footBox objCType:@encode(BoundedBox)];
-        
-        phoneBox.x               = [[phoneBoxArray objectAtIndex:0] intValue];
-        phoneBox.y               = [[phoneBoxArray objectAtIndex:1] intValue];
-        phoneBox.w               = [[phoneBoxArray objectAtIndex:2] intValue];
-        phoneBox.h               = [[phoneBoxArray objectAtIndex:3] intValue];
-        
-        NSValue * phoneBoxObject = [NSValue valueWithBytes:&phoneBox objCType:@encode(BoundedBox)];
-        
-        NSArray * boxesArray     = [NSArray arrayWithObjects:footBoxObject,phoneBoxObject, nil];
-        boundedBoxArray(boxesArray);
+        if ([[toDict objectForKey:@"code"] intValue] <= 0)
+        {
+            error([toDict objectForKey:@"error"]);
+        }
+        else if ([[toDict objectForKey:@"code"] intValue] == 1)
+        {
+            error(@"No bounding box for device received");
+        }
+        else if ([[toDict objectForKey:@"code"] intValue] == 2)
+        {
+            error(@"No bounding box for side foot received");
+        }
+        else if ([[toDict objectForKey:@"code"] intValue] == 3)
+        {
+            BoundedBox footBox, phoneBox;
+            
+            NSArray * footBoxArray   = [toDict objectForKey:@"footBoundedBox"];
+            NSArray * phoneBoxArray  = [toDict objectForKey:@"phoneBoundedBox"];
+            
+            footBox.x                = [[footBoxArray objectAtIndex:0] intValue];
+            footBox.y                = [[footBoxArray objectAtIndex:1] intValue];
+            footBox.w                = [[footBoxArray objectAtIndex:2] intValue];
+            footBox.h                = [[footBoxArray objectAtIndex:3] intValue];
+            
+            NSValue * footBoxObject  = [NSValue valueWithBytes:&footBox objCType:@encode(BoundedBox)];
+            
+            phoneBox.x               = [[phoneBoxArray objectAtIndex:0] intValue];
+            phoneBox.y               = [[phoneBoxArray objectAtIndex:1] intValue];
+            phoneBox.w               = [[phoneBoxArray objectAtIndex:2] intValue];
+            phoneBox.h               = [[phoneBoxArray objectAtIndex:3] intValue];
+            
+            NSValue * phoneBoxObject = [NSValue valueWithBytes:&phoneBox objCType:@encode(BoundedBox)];
+            
+            NSArray * boxesArray     = [NSArray arrayWithObjects:footBoxObject,phoneBoxObject, nil];
+            boundedBoxArray(boxesArray);
+        }
+        else
+        {
+            error(@"Side Foot image seems invalid");
+        }
     }
     else
     {
-        error(@"Side Foot image seems invalid");
+        // intagleo new response handler
+        NSError      * _error;
+        NSDictionary * toDict         = [XMLReader dictionaryForXMLData:responseData options:XMLReaderOptionsProcessNamespaces error:&_error];
+        NSString     * code           = [[[toDict objectForKey:@"data"] objectForKey:@"Code"] objectForKey:@"text"];
+        
+        NSLog(@"Side foot dict:\n %@",toDict);
+        
+        if ([code intValue] <= 0)
+        {
+            error([[[toDict objectForKey:@"data"] objectForKey:@"Error"] objectForKey:@"text"]);
+        }
+        else if ([code intValue] == 1)
+        {
+            error(@"No bounding box for device received.");
+        }
+        else if ([code intValue] == 2)
+        {
+            error(@"No bounding box for side foot received.");
+        }
+        else if ([code intValue] == 3)
+        {
+            BoundedBox footBox, phoneBox;
+            
+            footBox.x                = [[[[[toDict objectForKey:@"data"] objectForKey:@"FootBox"] objectForKey:@"pointX"] objectForKey:@"text"] intValue];
+            footBox.y                = [[[[[toDict objectForKey:@"data"] objectForKey:@"FootBox"] objectForKey:@"pointY"] objectForKey:@"text"] intValue];
+            footBox.w                = [[[[[toDict objectForKey:@"data"] objectForKey:@"FootBox"] objectForKey:@"width" ] objectForKey:@"text"] intValue];
+            footBox.h                = [[[[[toDict objectForKey:@"data"] objectForKey:@"FootBox"] objectForKey:@"height"] objectForKey:@"text"] intValue];
+            
+            NSValue * footBoxObject  = [NSValue valueWithBytes:&footBox objCType:@encode(BoundedBox)];
+            
+            phoneBox.x               = [[[[[toDict objectForKey:@"data"] objectForKey:@"PhoneBox"] objectForKey:@"pointX"] objectForKey:@"text"] intValue];
+            phoneBox.y               = [[[[[toDict objectForKey:@"data"] objectForKey:@"PhoneBox"] objectForKey:@"pointY"] objectForKey:@"text"] intValue];
+            phoneBox.w               = [[[[[toDict objectForKey:@"data"] objectForKey:@"PhoneBox"] objectForKey:@"width" ] objectForKey:@"text"] intValue];
+            phoneBox.h               = [[[[[toDict objectForKey:@"data"] objectForKey:@"PhoneBox"] objectForKey:@"height"] objectForKey:@"text"] intValue];
+            
+            NSValue * phoneBoxObject = [NSValue valueWithBytes:&phoneBox objCType:@encode(BoundedBox)];
+            
+            NSArray * boxesArray     = [NSArray arrayWithObjects:footBoxObject,phoneBoxObject, nil];
+            boundedBoxArray(boxesArray);
+        }
+        else
+        {
+            error(@"Side Foot image seems invalid");
+        }
     }
 }
 
 -(void)handleResponseForFrontFoot:(NSData *)responseData block:(void (^)(NSArray *ba))boundedBoxArray errorMessage:(void(^)(NSString *))error
 {
-    // intagleo new response handler
-//    NSError      * _error;
-//    NSDictionary * toDict         = [XMLReader dictionaryForXMLData:responseData options:XMLReaderOptionsProcessNamespaces error:&_error];
-//    NSString     * code           = [[[toDict objectForKey:@"data"] objectForKey:@"Code"] objectForKey:@"text"];
-//    
-//    NSLog(@"Front foot dict:\n %@",toDict);
-//    
-//    if ([code intValue] <= 0)
-//    {
-//        error([[[toDict objectForKey:@"data"] objectForKey:@"Error"] objectForKey:@"text"]);
-//    }
-//    else if ([code intValue] == 1)
-//    {
-//        error(@"No bounding box for device received.");
-//    }
-//    else if ([code intValue] == 2)
-//    {
-//        error(@"No bounding box for front foot received.");
-//    }
-//    else if ([code intValue] == 3)
-//    {
-//        BoundedBox footBox, phoneBox;
-//        
-//        footBox.x                = [[[[[toDict objectForKey:@"data"] objectForKey:@"FootBox"] objectForKey:@"pointX"] objectForKey:@"text"] intValue];
-//        footBox.y                = [[[[[toDict objectForKey:@"data"] objectForKey:@"FootBox"] objectForKey:@"pointY"] objectForKey:@"text"] intValue];
-//        footBox.w                = [[[[[toDict objectForKey:@"data"] objectForKey:@"FootBox"] objectForKey:@"width" ] objectForKey:@"text"] intValue];
-//        footBox.h                = [[[[[toDict objectForKey:@"data"] objectForKey:@"FootBox"] objectForKey:@"height"] objectForKey:@"text"] intValue];
-//        
-//        NSValue * footBoxObject  = [NSValue valueWithBytes:&footBox objCType:@encode(BoundedBox)];
-//        
-//        phoneBox.x               = [[[[[toDict objectForKey:@"data"] objectForKey:@"PhoneBox"] objectForKey:@"pointX"] objectForKey:@"text"] intValue];
-//        phoneBox.y               = [[[[[toDict objectForKey:@"data"] objectForKey:@"PhoneBox"] objectForKey:@"pointY"] objectForKey:@"text"] intValue];
-//        phoneBox.w               = [[[[[toDict objectForKey:@"data"] objectForKey:@"PhoneBox"] objectForKey:@"width" ] objectForKey:@"text"] intValue];
-//        phoneBox.h               = [[[[[toDict objectForKey:@"data"] objectForKey:@"PhoneBox"] objectForKey:@"height"] objectForKey:@"text"] intValue];
-//        
-//        NSValue * phoneBoxObject = [NSValue valueWithBytes:&phoneBox objCType:@encode(BoundedBox)];
-//        
-//        NSArray * boxesArray     = [NSArray arrayWithObjects:footBoxObject,phoneBoxObject, nil];
-//        boundedBoxArray(boxesArray);
-//    }
-//    else
-//    {
-//        error(@"Front Foot image seems invalid");
-//    }
-    
-    
-    // client old response handler
-    NSString     * responseString = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
-    NSDictionary * toDict         = [self parseServerResponseFromString:responseString];
-    
-    if (!responseString)
+    if (linux_webservice_manager.isHaar)
     {
-        error(@"Nil");
-        return;
-    }
-    
-    if ([[toDict objectForKey:@"code"] intValue] <= 0)
-    {
-        error([toDict objectForKey:@"error"]);
-    }
-    else if ([[toDict objectForKey:@"code"] intValue] == 1)
-    {
-        error(@"No bounding box for device received");
-    }
-    else if ([[toDict objectForKey:@"code"] intValue] == 2)
-    {
-        error(@"No bounding box for front foot received");
-    }
-    else if ([[toDict objectForKey:@"code"] intValue] == 3)
-    {
-        BoundedBox footBox, phoneBox;
+        // client old response handler
+        NSString     * responseString = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
+        NSDictionary * toDict         = [self parseServerResponseFromString:responseString];
         
-        NSArray * footBoxArray   = [toDict objectForKey:@"footBoundedBox"];
-        NSArray * phoneBoxArray  = [toDict objectForKey:@"phoneBoundedBox"];
+        if (!responseString)
+        {
+            error(@"Nil");
+            return;
+        }
         
-        footBox.x                = [[footBoxArray objectAtIndex:0] intValue];
-        footBox.y                = [[footBoxArray objectAtIndex:1] intValue];
-        footBox.w                = [[footBoxArray objectAtIndex:2] intValue];
-        footBox.h                = [[footBoxArray objectAtIndex:3] intValue];
-        
-        NSValue * footBoxObject  = [NSValue valueWithBytes:&footBox objCType:@encode(BoundedBox)];
-        
-        phoneBox.x               = [[phoneBoxArray objectAtIndex:0] intValue];
-        phoneBox.y               = [[phoneBoxArray objectAtIndex:1] intValue];
-        phoneBox.w               = [[phoneBoxArray objectAtIndex:2] intValue];
-        phoneBox.h               = [[phoneBoxArray objectAtIndex:3] intValue];
-        
-        NSValue * phoneBoxObject = [NSValue valueWithBytes:&phoneBox objCType:@encode(BoundedBox)];
-        
-        NSArray * boxesArray     = [NSArray arrayWithObjects:footBoxObject,phoneBoxObject, nil];
-        boundedBoxArray(boxesArray);
+        if ([[toDict objectForKey:@"code"] intValue] <= 0)
+        {
+            error([toDict objectForKey:@"error"]);
+        }
+        else if ([[toDict objectForKey:@"code"] intValue] == 1)
+        {
+            error(@"No bounding box for device received");
+        }
+        else if ([[toDict objectForKey:@"code"] intValue] == 2)
+        {
+            error(@"No bounding box for front foot received");
+        }
+        else if ([[toDict objectForKey:@"code"] intValue] == 3)
+        {
+            BoundedBox footBox, phoneBox;
+            
+            NSArray * footBoxArray   = [toDict objectForKey:@"footBoundedBox"];
+            NSArray * phoneBoxArray  = [toDict objectForKey:@"phoneBoundedBox"];
+            
+            footBox.x                = [[footBoxArray objectAtIndex:0] intValue];
+            footBox.y                = [[footBoxArray objectAtIndex:1] intValue];
+            footBox.w                = [[footBoxArray objectAtIndex:2] intValue];
+            footBox.h                = [[footBoxArray objectAtIndex:3] intValue];
+            
+            NSValue * footBoxObject  = [NSValue valueWithBytes:&footBox objCType:@encode(BoundedBox)];
+            
+            phoneBox.x               = [[phoneBoxArray objectAtIndex:0] intValue];
+            phoneBox.y               = [[phoneBoxArray objectAtIndex:1] intValue];
+            phoneBox.w               = [[phoneBoxArray objectAtIndex:2] intValue];
+            phoneBox.h               = [[phoneBoxArray objectAtIndex:3] intValue];
+            
+            NSValue * phoneBoxObject = [NSValue valueWithBytes:&phoneBox objCType:@encode(BoundedBox)];
+            
+            NSArray * boxesArray     = [NSArray arrayWithObjects:footBoxObject,phoneBoxObject, nil];
+            boundedBoxArray(boxesArray);
+        }
+        else
+        {
+            error(@"Front Foot image seems invalid");
+        }
     }
     else
     {
-        error(@"Front Foot image seems invalid");
+        // intagleo new response handler
+        NSError      * _error;
+        NSDictionary * toDict         = [XMLReader dictionaryForXMLData:responseData options:XMLReaderOptionsProcessNamespaces error:&_error];
+        NSString     * code           = [[[toDict objectForKey:@"data"] objectForKey:@"Code"] objectForKey:@"text"];
+        
+        NSLog(@"Front foot dict:\n %@",toDict);
+        
+        if ([code intValue] <= 0)
+        {
+            error([[[toDict objectForKey:@"data"] objectForKey:@"Error"] objectForKey:@"text"]);
+        }
+        else if ([code intValue] == 1)
+        {
+            error(@"No bounding box for device received.");
+        }
+        else if ([code intValue] == 2)
+        {
+            error(@"No bounding box for front foot received.");
+        }
+        else if ([code intValue] == 3)
+        {
+            BoundedBox footBox, phoneBox;
+            
+            footBox.x                = [[[[[toDict objectForKey:@"data"] objectForKey:@"FootBox"] objectForKey:@"pointX"] objectForKey:@"text"] intValue];
+            footBox.y                = [[[[[toDict objectForKey:@"data"] objectForKey:@"FootBox"] objectForKey:@"pointY"] objectForKey:@"text"] intValue];
+            footBox.w                = [[[[[toDict objectForKey:@"data"] objectForKey:@"FootBox"] objectForKey:@"width" ] objectForKey:@"text"] intValue];
+            footBox.h                = [[[[[toDict objectForKey:@"data"] objectForKey:@"FootBox"] objectForKey:@"height"] objectForKey:@"text"] intValue];
+            
+            NSValue * footBoxObject  = [NSValue valueWithBytes:&footBox objCType:@encode(BoundedBox)];
+            
+            phoneBox.x               = [[[[[toDict objectForKey:@"data"] objectForKey:@"PhoneBox"] objectForKey:@"pointX"] objectForKey:@"text"] intValue];
+            phoneBox.y               = [[[[[toDict objectForKey:@"data"] objectForKey:@"PhoneBox"] objectForKey:@"pointY"] objectForKey:@"text"] intValue];
+            phoneBox.w               = [[[[[toDict objectForKey:@"data"] objectForKey:@"PhoneBox"] objectForKey:@"width" ] objectForKey:@"text"] intValue];
+            phoneBox.h               = [[[[[toDict objectForKey:@"data"] objectForKey:@"PhoneBox"] objectForKey:@"height"] objectForKey:@"text"] intValue];
+            
+            NSValue * phoneBoxObject = [NSValue valueWithBytes:&phoneBox objCType:@encode(BoundedBox)];
+            
+            NSArray * boxesArray     = [NSArray arrayWithObjects:footBoxObject,phoneBoxObject, nil];
+            boundedBoxArray(boxesArray);
+        }
+        else
+        {
+            error(@"Front Foot image seems invalid");
+        }
     }
 }
 

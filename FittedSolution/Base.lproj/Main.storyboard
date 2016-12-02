@@ -42,8 +42,8 @@
                                     <action selector="infoButtonAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4MK-kl-zQD"/>
                                 </connections>
                             </button>
-                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loading1.png" id="dcB-Ut-LsH">
-                                <frame key="frameInset" minX="42.40%" minY="40.93%" width="15.47%" height="8.85%"/>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="loading1.png" id="dcB-Ut-LsH">
+                                <frame key="frameInset" minX="42.40%" minY="31.93%" width="15.47%" height="8.85%"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Hto-ly-83q">
@@ -55,12 +55,24 @@
                                     <action selector="cameraButtonAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9mR-Dr-2xV"/>
                                 </connections>
                             </button>
-                            <view hidden="YES" alpha="0.80000000000000004" contentMode="scaleToFill" id="WkA-7R-LOc">
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="TXr-tG-bSb">
+                                <frame key="frameInset" minX="33.87%" minY="14.42%" width="32.27%" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <segments>
+                                    <segment title="Haar"/>
+                                    <segment title="CNN"/>
+                                </segments>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <action selector="segmentDidChange:" destination="BYZ-38-t0r" eventType="valueChanged" id="uT7-3i-hzb"/>
+                                </connections>
+                            </segmentedControl>
+                            <view hidden="YES" alpha="0.80000000000000004" contentMode="scaleToFill" misplaced="YES" id="WkA-7R-LOc">
                                 <frame key="frameInset" minX="0.0%" minY="0.0%" width="100.00%" height="100.00%"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
-                            <view hidden="YES" contentMode="scaleToFill" id="54b-NK-KI5">
+                            <view hidden="YES" contentMode="scaleToFill" misplaced="YES" id="54b-NK-KI5">
                                 <frame key="frameInset" minX="8.53%" minY="10.35%" width="82.67%" height="79.16%"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <subviews>
@@ -83,14 +95,17 @@
                     <connections>
                         <outlet property="activityImageView" destination="dcB-Ut-LsH" id="3z2-W7-Zgc"/>
                         <outlet property="cameraButton" destination="Hto-ly-83q" id="88y-B0-uSh"/>
+                        <outlet property="infoButton" destination="IQM-dG-6VQ" id="duQ-Mi-g31"/>
+                        <outlet property="menuButton" destination="TGG-Zw-bTl" id="Ghr-ZC-yvC"/>
                         <outlet property="popUpContainerView" destination="WkA-7R-LOc" id="4fF-0g-5aH"/>
                         <outlet property="popUpView" destination="54b-NK-KI5" id="arR-XT-gLR"/>
                         <outlet property="resetButton" destination="7vL-es-ZTE" id="1qh-lo-fVN"/>
+                        <outlet property="segmentControl" destination="TXr-tG-bSb" id="Ped-iF-FXn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="96" y="-1680"/>
+            <point key="canvasLocation" x="57.5" y="-1681.5"/>
         </scene>
         <!--Result View Controller-->
         <scene sceneID="Ges-Ev-dwM">

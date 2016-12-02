@@ -40,8 +40,15 @@
     NSLog(@"Windows--> Side Foot JPEG Image length : %f Kb",(unsigned long)sideFootImageData.length/1024.0f);
     NSLog(@"Windows--> Side Foot JPEG Image length : %f Mb",(unsigned long)sideFootImageData.length/1024.0f/1024.0);
     
-    NSString * deviceLength             = @"5.44";
-    //NSString * deviceLength             = [UIDeviceHardware deviceLength];
+    NSString * deviceLength;
+    if (linux_webservice_manager.isHaar)
+    {
+        deviceLength  = [UIDeviceHardware deviceLength];
+    }
+    else
+    {
+        deviceLength  = @"5.44";
+    }
     
     NSDictionary * headers              = @{ @"SOAPAction": @"http://tempuri.org/SideFootUpload",
                                              @"content-type": @"text/xml; charset=utf-8",
@@ -79,7 +86,6 @@
         
         if (_error)
         {
-            NSLog(@"Side Foot Segmentation Error %@", _error);
             [app_manager handleError:_error];
             errorString = @"";
             error(errorString);
@@ -132,8 +138,15 @@
     
     NSLog(@"------------____------ resultID : %@",resultID);
     
-    NSString * deviceLength             = @"5.44";
-    //NSString * deviceLength             = [UIDeviceHardware deviceLength];
+    NSString * deviceLength;
+    if (linux_webservice_manager.isHaar)
+    {
+        deviceLength  = [UIDeviceHardware deviceLength];
+    }
+    else
+    {
+        deviceLength  = @"5.44";
+    }
     
     NSDictionary * headers              =   @{ @"SOAPAction": @"http://tempuri.org/FrontFootUpload",
                                                @"content-type": @"text/xml; charset=utf-8",

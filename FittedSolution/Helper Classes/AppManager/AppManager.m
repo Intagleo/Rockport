@@ -57,8 +57,8 @@
 {
     float actualHeight = image.size.height;
     float actualWidth = image.size.width;
-    float maxHeight = 600.0;
-    float maxWidth = 800.0;
+    float maxHeight = 600;
+    float maxWidth = 800;
     float imgRatio = actualWidth/actualHeight;
     float maxRatio = maxWidth/maxHeight;
     //float compressionQuality = 0.5;//50 percent compression
@@ -198,12 +198,25 @@
     CGContextStrokeRect(ctx, footBoxRect);     // CGContextStrokeEllipseInRect(ctx, circleRect);
     
     //// write text for foot on image
-    NSString *text = [NSString stringWithFormat:@"x: %d, y: %d, w: %d, h: %d",footBox.x,footBox.y,footBox.w,footBox.h];
+    
+    NSString *text;
+    if (linux_webservice_manager.isHaar)
+    {
+        text = [NSString stringWithFormat:@"Haar :\nFoot Box --> x: %d, y: %d, w: %d, h: %d",footBox.x,footBox.y,footBox.w,footBox.h];
+    }
+    else
+    {
+        text = [NSString stringWithFormat:@"CNN :\nFoot Box --> x: %d, y: %d, w: %d, h: %d",footBox.x,footBox.y,footBox.w,footBox.h];
+    }
+    
     UIFont *font = [UIFont boldSystemFontOfSize:30];
-    CGRect rect = CGRectMake(footBox.x, footBox.y-50, image.size.width, image.size.height);
+    CGRect rect = CGRectMake(10, 10, image.size.width, 70); //CGRectMake(footBox.x, footBox.y-50, image.size.width, image.size.height);
     [[UIColor whiteColor] set];
     
-    NSDictionary *attributes = @{ NSFontAttributeName: font , NSStrokeColorAttributeName:[UIColor whiteColor]};
+    //NSDictionary *attributes = @{ NSFontAttributeName: font , NSStrokeColorAttributeName:[UIColor whiteColor]};
+    NSDictionary *attributes = @{ NSFontAttributeName: font , NSForegroundColorAttributeName : [UIColor whiteColor],
+                                  NSStrokeColorAttributeName : [UIColor blueColor],
+                                  NSStrokeWidthAttributeName : [NSNumber numberWithFloat:-1.5]};
     [text drawInRect:CGRectIntegral(rect) withAttributes:attributes];
     
     //////////////////// for foot end
@@ -219,12 +232,15 @@
     CGContextStrokeRect(ctx, phoneBoxRect);
     
     //// write text for phone on image
-    NSString *text2 = [NSString stringWithFormat:@"x: %d, y: %d, w: %d, h: %d",phoneBox.x,phoneBox.y,phoneBox.w,phoneBox.h];
+    NSString *text2 = [NSString stringWithFormat:@"Phone Box --> x: %d, y: %d, w: %d, h: %d",phoneBox.x,phoneBox.y,phoneBox.w,phoneBox.h];
     UIFont *font2 = [UIFont boldSystemFontOfSize:30];
-    CGRect rect2 = CGRectMake(phoneBox.x, phoneBox.y-50, image.size.width, image.size.height);
+    CGRect rect2 = CGRectMake(10, 80, image.size.width, 50); //CGRectMake(phoneBox.x, phoneBox.y-50, image.size.width, image.size.height);
     [[UIColor whiteColor] set];
     
-    NSDictionary *attributes2 = @{ NSFontAttributeName: font2 , NSStrokeColorAttributeName:[UIColor whiteColor]};
+    //NSDictionary *attributes2 = @{ NSFontAttributeName: font2 , NSStrokeColorAttributeName:[UIColor whiteColor]};
+    NSDictionary *attributes2 = @{ NSFontAttributeName: font2 , NSForegroundColorAttributeName : [UIColor whiteColor],
+                                   NSStrokeColorAttributeName : [UIColor blueColor],
+                                   NSStrokeWidthAttributeName : [NSNumber numberWithFloat:-1.5]};
     [text2 drawInRect:CGRectIntegral(rect2) withAttributes:attributes2];
     
     //////////////////// for phone end
@@ -280,7 +296,10 @@
         self.rootViewController.activityImageView.animationRepeatCount = 0; //HUGE_VAL;
         [self.rootViewController.activityImageView startAnimating];
         
-        self.rootViewController.cameraButton.userInteractionEnabled = NO;
+        self.rootViewController.cameraButton.userInteractionEnabled   = NO;
+        self.rootViewController.menuButton.userInteractionEnabled     = NO;
+        self.rootViewController.infoButton.userInteractionEnabled     = NO;
+        self.rootViewController.segmentControl.userInteractionEnabled = NO;
     });
 }
 
@@ -289,8 +308,11 @@
     dispatch_async(dispatch_get_main_queue(), ^
     {
         [self.rootViewController.activityImageView stopAnimating];
-        self.rootViewController.activityImageView.hidden            = YES;
-        self.rootViewController.cameraButton.userInteractionEnabled = YES;
+        self.rootViewController.activityImageView.hidden              = YES;
+        self.rootViewController.cameraButton.userInteractionEnabled   = YES;
+        self.rootViewController.menuButton.userInteractionEnabled     = YES;
+        self.rootViewController.infoButton.userInteractionEnabled     = YES;
+        self.rootViewController.segmentControl.userInteractionEnabled = YES;
     });
 }
 

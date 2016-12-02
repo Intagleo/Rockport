@@ -17,6 +17,10 @@
 #import "TutorialViewController.h"
 #import "CacheManager.h"
 
+
+#define kSideFoot  @"side"
+#define kFrontFoot @"front"
+
 @interface MainViewController ()
 {
     UIImagePickerController  * imagePicker                                  ;
@@ -55,9 +59,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
+    
     step                           = StepOne;
     app_manager.rootViewController = self;
+    
+    // by default detection method is Haar
+    linux_webservice_manager.isHaar = YES;
     
     [text_to_speech_manager setUp];
     
@@ -127,6 +135,18 @@
 {
 }
 
+- (IBAction)segmentDidChange:(UISegmentedControl *)sender
+{
+    if (sender.selectedSegmentIndex == 0)
+    {
+        linux_webservice_manager.isHaar = YES;
+    }
+    else
+    {
+        linux_webservice_manager.isHaar = NO;
+    }
+}
+
 #pragma mark - SpeechRecognitionManagerDelegate
 
 -(void)pocketsphinxDidReceiveHypothesis:(NSString *)hypothesis recognitionScore:(NSString *)recognitionScore utteranceID:(NSString *)utteranceID
@@ -142,6 +162,15 @@
 
 #pragma mark - UIImagePickerControllerDelegate
 
+- (UIImage*)imageWithImage:(UIImage*)image
+{
+    UIGraphicsBeginImageContext( CGSizeMake(image.size.width, image.size.height));
+    [image drawInRect:CGRectMake(0,0,image.size.width, image.size.height)];
+    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext() ;
+    return newImage;
+}
+
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     [picker dismissViewControllerAnimated:YES completion:^{
@@ -153,18 +182,24 @@
         [app_manager startAnimatingActivityIndicator];
     
         UIImage * imageTaken      = [app_manager fixRotation:[info objectForKey:UIImagePickerControllerOriginalImage]];
-        
-//        if (step == StepOne || step == StepOneRepeat) {
-//            imageTaken      = [UIImage imageNamed:@"0.jpg"];
-//        }
-//        else
-//        {
-//            imageTaken      = [UIImage imageNamed:@"frontFoot1.jpg"];
-//        }
-        
-        
         capturedPhoto             = [app_manager compressImage:imageTaken];
+
+        
+        
+        NSData *d = UIImagePNGRepresentation(capturedPhoto);
+//        UIImage *i = [UIImage imageWithData:d];
+//        UIImageWriteToSavedPhotosAlbum(i, self, nil, nil);
+        
+        NSLog(@"original Image length : %f Kb",(unsigned long)d.length/1024.0f);
+        NSLog(@"original Image length : %f Mb",(unsigned long)d.length/1024.0f/1024.0f);
+        
         capturedPhotoData         = [app_manager addPhoneModelAndNameToImageMetaData:capturedPhoto];
+        
+        
+//        NSData *d = UIImagePNGRepresentation(imageTaken);
+//        NSString * postLength            = [NSString stringWithFormat:@"%d", (int)[d length]];
+        NSLog(@"original Image length : %f Kb",(unsigned long)capturedPhotoData.length/1024.0f);
+        NSLog(@"original Image length : %f Mb",(unsigned long)capturedPhotoData.length/1024.0f/1024.0f);
         
         _resetButton.hidden   = NO;
 
@@ -497,11 +532,11 @@
 
 -(void)cropImage:(UIImage *)image withRect:(CGRect)rect forFoot:(NSString *)foot
 {
-    if ([foot isEqualToString:@"side"])
+    if ([foot isEqualToString:kSideFoot])
     {
         _sideFootBoundedBoxCroppedImage  = [image croppedImage:rect];
     }
-    else if ([foot isEqualToString:@"front"])
+    else if ([foot isEqualToString:kFrontFoot])
     {
         _frontFootBoundedBoxCroppedImage = [image croppedImage:rect];
     }
@@ -542,7 +577,7 @@
                   
                   // crop foot and save for result screen
                   CGRect sideFootRect = CGRectMake(footBoundedBox.x, footBoundedBox.y, footBoundedBox.w, footBoundedBox.h);
-                  [self cropImage:capturedPhoto withRect:sideFootRect forFoot:@"side"];
+                  [self cropImage:capturedPhoto withRect:sideFootRect forFoot:kSideFoot];
                   
                   // show alert
                   [app_manager showMeasuredPopup];
@@ -601,7 +636,7 @@
                   
                   // crop foot and save
                   CGRect sideFootRect = CGRectMake(footBoundedBox.x, footBoundedBox.y, footBoundedBox.w, footBoundedBox.h);
-                  [self cropImage:capturedPhoto withRect:sideFootRect forFoot:@"front"];
+                  [self cropImage:capturedPhoto withRect:sideFootRect forFoot:kFrontFoot];
                   
                   // show alert
                   [app_manager showMeasuredPopup];
@@ -678,8 +713,11 @@
          isSideFootErrorAppeared = YES;
          sideFootErrorString     = error;
          
-         [self sideFootResponseReceivedFromWindowsServerWithSuccess:NO];
-         
+         if(error.length > 0)
+         {
+             [self sideFootResponseReceivedFromWindowsServerWithSuccess:NO];
+         }
+     
          //         step = StepOneRepeat;
          //
          //         if (error.length > 0)

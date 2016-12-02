@@ -17,11 +17,11 @@
 
 @implementation ResultViewController
 
-
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self notifiyServerWithString:@"1"];
     
     _titleLbl.text = @"Swipe left for front view";
     
@@ -321,6 +321,34 @@
     
     [_rightArrowBtn setImage:[UIImage imageNamed:@"RightArrowOFF"] forState:UIControlStateNormal];
     _rightArrowBtn.userInteractionEnabled = NO;
+}
+
+-(void)notifiyServerWithString:(NSString *)string
+{
+    NSData   * postData           = [string dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSString * postLength         = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
+    
+    NSMutableURLRequest * request = [[NSMutableURLRequest alloc] init];
+    [request setURL:[NSURL URLWithString:@"http://35.160.0.102/return_status.php"]];
+    [request setHTTPMethod:@"POST"];
+    
+    [request addValue:postLength forHTTPHeaderField:@"Content-Length"];
+    [request setHTTPBody:postData];
+    
+    NSURLSessionTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable _data, NSURLResponse * _Nullable _response, NSError * _Nullable _error)
+                              {
+                                  if (_error)
+                                  {
+                                      NSLog(@"notifiyServerWithString, Error : %@",_error.description);
+                                  }
+                                  if (_response)
+                                  {
+                                      NSString *responseString = [[NSString alloc] initWithData:_data encoding:NSASCIIStringEncoding];
+                                      NSLog(@"notifiyServerWithString, response : %@",responseString);
+                                  }
+                              }];
+    
+    [task resume];
 }
 
 #pragma mark - Button Actions
