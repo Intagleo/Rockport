@@ -31,6 +31,7 @@ typedef struct BoundedBox BoundedBox;
 
 +(AppManager *)sharedInstance;
 
+@property(nonatomic,assign) BOOL is_Haar;
 @property (nonatomic, strong) MainViewController *rootViewController;
 
 - (NSString *)getDeviceiOSVersion;
@@ -48,6 +49,7 @@ typedef struct BoundedBox BoundedBox;
 
 - (void)handleError:(NSError *)error;
 - (void)showResetAlertWithTitle:(NSString *)title Message:(NSString *)message;
+- (void)showAlertWithTitle:(NSString *)title andMessage:(NSString *)message;
 - (void)showAlertWithTitle:(NSString *)title Message:(NSString *)message andAction:(NSString *)action;
 - (void)showAlertForInternetErrorWithTitle:(NSString *)title Message:(NSString *)message;
 

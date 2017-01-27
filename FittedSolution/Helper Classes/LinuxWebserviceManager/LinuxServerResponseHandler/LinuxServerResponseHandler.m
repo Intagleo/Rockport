@@ -7,6 +7,7 @@
 //
 
 #import "LinuxServerResponseHandler.h"
+#import "XMLReader.h"
 
 @implementation LinuxServerResponseHandler
 
@@ -21,8 +22,86 @@
     return instance;
 }
 
--(void)handleResponseForSideFoot:(NSData *)responseData block:(void (^)(NSArray *ba))boundedBoxArray errorMessage:(void(^)(NSString *))error
+-(void)handleResponseForSideFoot:(NSData *)responseData block:(void (^)(FootDescription *))sideFootDescription errorMessage:(void(^)(NSString *))error
 {
+    NSError      * _error;
+    NSDictionary * toDict         = [XMLReader dictionaryForXMLData:responseData options:XMLReaderOptionsProcessNamespaces error:&_error];
+    NSString     * code           = [[[toDict objectForKey:@"data"] objectForKey:@"Code"] objectForKey:@"text"];
+    
+    NSLog(@"Side foot dict:\n %@ \n____________________\n",toDict);
+    
+    if ([code intValue] <= 0)
+    {
+        error([[[toDict objectForKey:@"data"] objectForKey:@"Error"] objectForKey:@"text"]);
+    }
+    else if([code intValue] == 1)
+    {
+        FootDescription * footDescription = [[FootDescription alloc] init];
+        
+        footDescription.archDistance = [[[toDict objectForKey:@"data"] objectForKey:@"ArchDistance"] objectForKey:@"text"];
+        footDescription.archHeight   = [[[toDict objectForKey:@"data"] objectForKey:@"ArchHeight"] objectForKey:@"text"];
+        footDescription.footLength   = [[[toDict objectForKey:@"data"] objectForKey:@"FootLength"] objectForKey:@"text"];
+        footDescription.talusHeight  = [[[toDict objectForKey:@"data"] objectForKey:@"TalusHeight"] objectForKey:@"text"];
+        footDescription.talusSlope   = [[[toDict objectForKey:@"data"] objectForKey:@"TalusSlope"] objectForKey:@"text"];
+        footDescription.toeBoxHeight = [[[toDict objectForKey:@"data"] objectForKey:@"ToeBoxHeight"] objectForKey:@"text"];
+        footDescription.sideFootCutOutImageUrl = [[[toDict objectForKey:@"data"] objectForKey:@"ImagePath"] objectForKey:@"text"];
+        
+        sideFootDescription(footDescription);
+    }
+    else if ([code intValue] == 2)
+    {
+        error([[[toDict objectForKey:@"data"] objectForKey:@"Error"] objectForKey:@"text"]);
+    }
+    else
+    {
+        error(@"Side Foot image seems invalid");
+    }
+}
+
+-(void)handleResponseForFrontFoot:(NSData *)responseData block:(void (^)(FootDescription *))frontFootDescription errorMessage:(void(^)(NSString *))error
+{
+    // intagleo new response handler
+    NSError      * _error;
+    NSDictionary * toDict         = [XMLReader dictionaryForXMLData:responseData options:XMLReaderOptionsProcessNamespaces error:&_error];
+    NSString     * code           = [[[toDict objectForKey:@"data"] objectForKey:@"Code"] objectForKey:@"text"];
+    
+    NSLog(@"Front foot dict:\n %@ \n____________________\n",toDict);
+    
+    if ([code intValue] <= 0)
+    {
+        error([[[toDict objectForKey:@"data"] objectForKey:@"Error"] objectForKey:@"text"]);
+    }
+    else if ([code intValue] == 1)
+    {
+        FootDescription * footDescription = [[FootDescription alloc] init];
+        footDescription.footWidh = [[[toDict objectForKey:@"data"] objectForKey:@"FootWidth"] objectForKey:@"text"];
+
+        footDescription.men_Euro     = [[[toDict objectForKey:@"data"] objectForKey:@"MenEuro"] objectForKey:@"text"];
+        footDescription.men_UK       = [[[toDict objectForKey:@"data"] objectForKey:@"MenUK"] objectForKey:@"text"];
+        footDescription.men_US       = [[[toDict objectForKey:@"data"] objectForKey:@"MenUs"] objectForKey:@"text"];
+        footDescription.women_Euro   = [[[toDict objectForKey:@"data"] objectForKey:@"WomenEuro"] objectForKey:@"text"];
+        footDescription.women_UK     = [[[toDict objectForKey:@"data"] objectForKey:@"WomenUK"] objectForKey:@"text"];
+        footDescription.women_US     = [[[toDict objectForKey:@"data"] objectForKey:@"WomenUs"] objectForKey:@"text"];
+        footDescription.frontFootCutOutImageUrl = [[[toDict objectForKey:@"data"] objectForKey:@"ImagePath"] objectForKey:@"text"];
+        
+        frontFootDescription(footDescription);
+    }
+    else if ([code intValue] == 2)
+    {
+        error([[[toDict objectForKey:@"data"] objectForKey:@"Error"] objectForKey:@"text"]);
+    }
+    else
+    {
+        error(@"Front Foot image seems invalid");
+    }
+}
+
+
+//////////// HAAR /////////
+
+-(void)handleHAARResponseForSideFoot:(NSData *)responseData block:(void (^)(NSArray *ba))boundedBoxArray errorMessage:(void(^)(NSString *))error
+{
+    // client old response handler
     NSString     * responseString = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
     NSDictionary * toDict         = [self parseServerResponseFromString:responseString];
     
@@ -74,8 +153,9 @@
     }
 }
 
--(void)handleResponseForFrontFoot:(NSData *)responseData block:(void (^)(NSArray *ba))boundedBoxArray errorMessage:(void(^)(NSString *))error
+-(void)handleHAARResponseForFrontFoot:(NSData *)responseData block:(void (^)(NSArray *ba))boundedBoxArray errorMessage:(void(^)(NSString *))error
 {
+    // client old response handler
     NSString     * responseString = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
     NSDictionary * toDict         = [self parseServerResponseFromString:responseString];
     
@@ -126,8 +206,6 @@
         error(@"Front Foot image seems invalid");
     }
 }
-
-#pragma mark - helper methods
 
 -(NSDictionary *)parseServerResponseFromString:(NSString *)response
 {
@@ -207,5 +285,9 @@
     
     return mutableDictionary;
 }
+
+
+
+
 
 @end

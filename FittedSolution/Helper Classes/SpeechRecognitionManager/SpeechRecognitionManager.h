@@ -39,5 +39,6 @@
 -(void)setUpSpeechRecognition;
 -(void)startListeningClickVoice;
 -(void)stopListeningClickVoice;
+-(BOOL)isListening;
 
 @end

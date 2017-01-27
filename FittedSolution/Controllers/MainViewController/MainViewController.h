@@ -11,7 +11,7 @@
 
 
 @interface MainViewController : UIViewController <UINavigationControllerDelegate,UIImagePickerControllerDelegate,SpeechRecognitionManagerDelegate>
-
+        
 enum Step
 {
     StepOne        ,
@@ -22,11 +22,19 @@ enum Step
 
 @property enum Step step                    ;
 
+@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
+- (IBAction)segmentDidChange:(UISegmentedControl *)sender;
+
+@property (weak, nonatomic) IBOutlet UILabel *progressSatusLabel;
+@property (weak, nonatomic) IBOutlet UIProgressView *progressView;
+
 /*
  *
  *  Button Outlets and Actions
  *
  */
+@property (weak, nonatomic) IBOutlet UIButton * menuButton;
+@property (weak, nonatomic) IBOutlet UIButton * infoButton;
 
 - (IBAction)menuButtonAction:(id)sender     ;
 - (IBAction)infoButtonAction:(id)sender     ;
@@ -47,8 +55,9 @@ enum Step
 
 @property (weak, nonatomic) IBOutlet UIView * popUpContainerView;
 @property (weak, nonatomic) IBOutlet UIView * popUpView;
-- (IBAction)popUpOkButtonAction:(id)sender;
+@property (weak, nonatomic) IBOutlet UIImageView *popUpViewImageView;
 
+- (IBAction)popUpOkButtonAction:(id)sender;
 
 /*
  *
@@ -56,7 +65,9 @@ enum Step
  *
  */
 
+-(void)resetAppData; 
 -(void)presentImagePicker;
 -(void)removeTutorialViewFromMainViewWithAnimation:(NSString *)animation;
+-(void)dismissImagePickerController;
 
 @end

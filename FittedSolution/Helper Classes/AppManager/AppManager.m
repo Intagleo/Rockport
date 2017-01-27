@@ -22,6 +22,7 @@
 {
     UIActivityIndicatorView  * activity;
     NSString                 * actionString;
+    BOOL                       resetButtonTapped;
 }
 @end
 
@@ -56,8 +57,8 @@
 {
     float actualHeight = image.size.height;
     float actualWidth = image.size.width;
-    float maxHeight = 600.0;
-    float maxWidth = 800.0;
+    float maxHeight = 600;
+    float maxWidth = 800;
     float imgRatio = actualWidth/actualHeight;
     float maxRatio = maxWidth/maxHeight;
     //float compressionQuality = 0.5;//50 percent compression
@@ -197,12 +198,17 @@
     CGContextStrokeRect(ctx, footBoxRect);     // CGContextStrokeEllipseInRect(ctx, circleRect);
     
     //// write text for foot on image
-    NSString *text = [NSString stringWithFormat:@"x: %d, y: %d, w: %d, h: %d",footBox.x,footBox.y,footBox.w,footBox.h];
+    
+    NSString *text = [NSString stringWithFormat:@"Foot Box --> x: %d, y: %d, w: %d, h: %d",footBox.x,footBox.y,footBox.w,footBox.h];
+
     UIFont *font = [UIFont boldSystemFontOfSize:30];
-    CGRect rect = CGRectMake(footBox.x, footBox.y-50, image.size.width, image.size.height);
+    CGRect rect = CGRectMake(10, 10, image.size.width, 70); //CGRectMake(footBox.x, footBox.y-50, image.size.width, image.size.height);
     [[UIColor whiteColor] set];
     
-    NSDictionary *attributes = @{ NSFontAttributeName: font , NSStrokeColorAttributeName:[UIColor whiteColor]};
+    //NSDictionary *attributes = @{ NSFontAttributeName: font , NSStrokeColorAttributeName:[UIColor whiteColor]};
+    NSDictionary *attributes = @{ NSFontAttributeName: font , NSForegroundColorAttributeName : [UIColor whiteColor],
+                                  NSStrokeColorAttributeName : [UIColor blueColor],
+                                  NSStrokeWidthAttributeName : [NSNumber numberWithFloat:-1.5]};
     [text drawInRect:CGRectIntegral(rect) withAttributes:attributes];
     
     //////////////////// for foot end
@@ -218,16 +224,18 @@
     CGContextStrokeRect(ctx, phoneBoxRect);
     
     //// write text for phone on image
-    NSString *text2 = [NSString stringWithFormat:@"x: %d, y: %d, w: %d, h: %d",phoneBox.x,phoneBox.y,phoneBox.w,phoneBox.h];
+    NSString *text2 = [NSString stringWithFormat:@"Phone Box --> x: %d, y: %d, w: %d, h: %d",phoneBox.x,phoneBox.y,phoneBox.w,phoneBox.h];
     UIFont *font2 = [UIFont boldSystemFontOfSize:30];
-    CGRect rect2 = CGRectMake(phoneBox.x, phoneBox.y-50, image.size.width, image.size.height);
+    CGRect rect2 = CGRectMake(10, 80, image.size.width, 50); //CGRectMake(phoneBox.x, phoneBox.y-50, image.size.width, image.size.height);
     [[UIColor whiteColor] set];
     
-    NSDictionary *attributes2 = @{ NSFontAttributeName: font2 , NSStrokeColorAttributeName:[UIColor whiteColor]};
+    //NSDictionary *attributes2 = @{ NSFontAttributeName: font2 , NSStrokeColorAttributeName:[UIColor whiteColor]};
+    NSDictionary *attributes2 = @{ NSFontAttributeName: font2 , NSForegroundColorAttributeName : [UIColor whiteColor],
+                                   NSStrokeColorAttributeName : [UIColor blueColor],
+                                   NSStrokeWidthAttributeName : [NSNumber numberWithFloat:-1.5]};
     [text2 drawInRect:CGRectIntegral(rect2) withAttributes:attributes2];
     
     //////////////////// for phone end
-    
     
     // make image out of bitmap context
     UIImage *retImage = UIGraphicsGetImageFromCurrentImageContext();
@@ -241,9 +249,7 @@
     // cropped bounded box of foot image
     UIImage *croppedImage = [retImage croppedImage:footBoxRect];
     UIImageWriteToSavedPhotosAlbum(croppedImage, self, nil, nil);
-    
 }
-
 
 -(BOOL)isInternetAvailable
 {
@@ -279,7 +285,9 @@
         self.rootViewController.activityImageView.animationRepeatCount = 0; //HUGE_VAL;
         [self.rootViewController.activityImageView startAnimating];
         
-        self.rootViewController.cameraButton.userInteractionEnabled = NO;
+        self.rootViewController.cameraButton.userInteractionEnabled   = NO;
+        self.rootViewController.menuButton.userInteractionEnabled     = NO;
+        self.rootViewController.infoButton.userInteractionEnabled     = NO;
     });
 }
 
@@ -288,8 +296,10 @@
     dispatch_async(dispatch_get_main_queue(), ^
     {
         [self.rootViewController.activityImageView stopAnimating];
-        self.rootViewController.activityImageView.hidden            = YES;
-        self.rootViewController.cameraButton.userInteractionEnabled = YES;
+        self.rootViewController.activityImageView.hidden              = YES;
+        self.rootViewController.cameraButton.userInteractionEnabled   = YES;
+        self.rootViewController.menuButton.userInteractionEnabled     = YES;
+        self.rootViewController.infoButton.userInteractionEnabled     = YES;
     });
 }
 
@@ -317,7 +327,7 @@
                                             style:UIAlertActionStyleDestructive
                                             handler:^(UIAlertAction *action)
                                             {
-                                                [self stopAnimatingActivityIndicator];
+                                                //[self stopAnimatingActivityIndicator]; //1122
                                                 [self resetApp];
                                             }];
         
@@ -340,7 +350,7 @@
 {
     dispatch_async(dispatch_get_main_queue(), ^
     {
-        [self stopAnimatingActivityIndicator];
+        //[self stopAnimatingActivityIndicator]; //1122
         if (self.rootViewController.step == StepOne || self.rootViewController.step == StepOneRepeat)
         {
             self.rootViewController.resetButton.hidden = YES;
@@ -382,6 +392,48 @@
         return NO;
     }
     return YES;
+}
+
+-(void)showAlertWithTitle:(NSString *)title andMessage:(NSString *)message
+{
+    dispatch_async(dispatch_get_main_queue(), ^
+       {
+           if ([self text:message containsString:@"no device detected"])
+           {
+               [text_to_speech_manager readText:@"please ensure that your cell phone is not covered up and it is inside the phone grid outlines" afterDelay:0.0];
+           }
+           else
+           {
+               [text_to_speech_manager readText:@"please ensure that your feet is inside the feet grid outlines" afterDelay:0.0];
+           }
+           
+           if ([[self getDeviceiOSVersion] floatValue] < 8.0)
+           {
+               UIAlertView * alert = [[UIAlertView alloc] initWithTitle:title
+                                                                message:message
+                                                               delegate:self
+                                                      cancelButtonTitle:nil
+                                                      otherButtonTitles:@"Ok",nil];
+               [alert show];
+           }
+           else
+           {
+               UIAlertController * alert       = [UIAlertController
+                                                  alertControllerWithTitle:title
+                                                  message:message
+                                                  preferredStyle:UIAlertControllerStyleAlert];
+               
+               UIAlertAction     * okButton    = [UIAlertAction
+                                                  actionWithTitle:@"Ok"
+                                                  style:UIAlertActionStyleDefault
+                                                  handler:^(UIAlertAction * action)
+                                                  {
+                                                      [self closeAlertViewWithOutAction];
+                                                  }];
+               [alert addAction:okButton];
+               [self.rootViewController presentViewController:alert animated:YES completion:nil];
+           }
+       });
 }
 
 -(void)showAlertWithTitle:(NSString *)title Message:(NSString *)message andAction:(NSString *)okAction
@@ -453,7 +505,7 @@
     {
         if (alertView.tag == 5000)  // Reset - alert view
         {
-            [self stopAnimatingActivityIndicator];
+            //[self stopAnimatingActivityIndicator]; //1122
             [self resetApp];
         }
     }
@@ -476,6 +528,12 @@
 
 -(void)handleError:(NSError *)error
 {
+    if (resetButtonTapped)
+    {
+        resetButtonTapped = NO;
+        return;
+    }
+    
     if (error.code == -1009)
     {
         [self showAlertForInternetErrorWithTitle:@"Internet Connection Error" Message:@"The Internet connection appears to be offline. Please connect to the internet and then try again."];
@@ -500,11 +558,16 @@
 
 -(void)resetApp
 {
+    resetButtonTapped = YES;
+    
     [linux_webservice_manager   cancelAllRunningTasks];
     [windows_webservice_manager cancelAllRunningTasks];
     
     self.rootViewController.resetButton.hidden  = YES;
     self.rootViewController.step                = StepOne;
+    [self.rootViewController resetAppData];
+    
+    //[self.rootViewController dismissImagePickerController];
     [text_to_speech_manager readText:@"welcome to fitted solution, tap on info for app instructions." afterDelay:0.1];
 }
 
@@ -588,7 +651,7 @@
         TIFFDictionary = [NSMutableDictionary dictionary];
     }
     
-    NSLog(@"Device Name : %@", [UIDeviceHardware platformString]);
+    //NSLog(@"Device Name : %@", [UIDeviceHardware platformString]);
     
     if ([[UIDeviceHardware platformString] hasPrefix:@"iPhone"])
     {
@@ -614,7 +677,7 @@
     
     if(!destination)
     {
-        NSLog(@"***Could not create image destination ***");
+        //NSLog(@"***Could not create image destination ***");
     }
     
     //add the image contained in the image source to the destination, overidding the old metadata with our modified metadata
@@ -627,7 +690,7 @@
     
     if(!success)
     {
-        NSLog(@"***Could not create data from image destination ***");
+        //NSLog(@"***Could not create data from image destination ***");
     }
     
     //now we have the data ready to go, so do whatever you want with it

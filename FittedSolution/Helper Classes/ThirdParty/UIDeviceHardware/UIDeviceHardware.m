@@ -8,7 +8,6 @@
 #import "UIDeviceHardware.h"
 #include <sys/types.h>
 #include <sys/sysctl.h>
-
 #import <UIKit/UIKit.h>
 
 @implementation UIDeviceHardware
@@ -26,16 +25,15 @@
 
 + (NSString *) platformString
 {
-    NSString * platform = [self platform];
-    
+    NSString *platform = [self platform];
     if ([platform isEqualToString:@"iPhone1,1"])    return @"iPhone 1G";
     if ([platform isEqualToString:@"iPhone1,2"])    return @"iPhone 3G";
     if ([platform isEqualToString:@"iPhone2,1"])    return @"iPhone 3GS";
     if ([platform isEqualToString:@"iPhone3,1"])    return @"iPhone 4 (GSM)";
     if ([platform isEqualToString:@"iPhone3,3"])    return @"iPhone 4 (CDMA)";
     if ([platform isEqualToString:@"iPhone4,1"])    return @"iPhone 4S";
-    if ([platform isEqualToString:@"iPhone5,1"])    return @"iPhone 5 (GSM)";
-    if ([platform isEqualToString:@"iPhone5,2"])    return @"iPhone 5 (CDMA)";
+    if ([platform isEqualToString:@"iPhone5,1"])    return @"iPhone 5";  //@"iPhone 5 (GSM)"
+    if ([platform isEqualToString:@"iPhone5,2"])    return @"iPhone 5";  //@"iPhone 5 (CDMA)"
     if ([platform isEqualToString:@"iPhone5,3"])    return @"iPhone 5c";
     if ([platform isEqualToString:@"iPhone5,4"])    return @"iPhone 5c";
     if ([platform isEqualToString:@"iPhone6,1"])    return @"iPhone 5s";
@@ -45,7 +43,11 @@
     if ([platform isEqualToString:@"iPhone8,1"])    return @"iPhone 6s";
     if ([platform isEqualToString:@"iPhone8,2"])    return @"iPhone 6s Plus";
     if ([platform isEqualToString:@"iPhone8,4"])    return @"iPhone SE";
-
+    if ([platform isEqualToString:@"iPhone9,1"])    return @"iPhone 7";
+    if ([platform isEqualToString:@"iPhone9,2"])    return @"iPhone 7 Plus";
+    if ([platform isEqualToString:@"iPhone9,3"])    return @"iPhone 7";
+    if ([platform isEqualToString:@"iPhone9,4"])    return @"iPhone 7 Plus";
+    
     if ([platform isEqualToString:@"iPod1,1"])      return @"iPod Touch 1G";
     if ([platform isEqualToString:@"iPod2,1"])      return @"iPod Touch 2G";
     if ([platform isEqualToString:@"iPod3,1"])      return @"iPod Touch 3G";
@@ -83,7 +85,7 @@
     if ([platform isEqualToString:@"iPad6,4"])      return @"iPad Pro 9.7-inch (Cellular)";
     if ([platform isEqualToString:@"iPad6,7"])      return @"iPad Pro 12.9-inch (WiFi)";
     if ([platform isEqualToString:@"iPad6,8"])      return @"iPad Pro 12.9-inch (Cellular)";
-
+    
     if ([platform isEqualToString:@"i386"])         return [UIDevice currentDevice].model;
     if ([platform isEqualToString:@"x86_64"])       return [UIDevice currentDevice].model;
     
@@ -132,15 +134,29 @@
     }
     else if ([deviceType isEqualToString:@"iPhone 5 (GSM)"] || [deviceType isEqualToString:@"iPhone 5 (CDMA)"] || [deviceType isEqualToString:@"iPhone 5c"] || [deviceType isEqualToString:@"iPhone 5s"] || [deviceType isEqualToString:@"iPhone SE"] || [deviceType isEqualToString:@"iPod Touch 5G"] || [deviceType isEqualToString:@"iPod Touch 6G"])
     {
-        return @"4.87";
+        if ([deviceType isEqualToString:@"iPhone 5c"])
+        {
+            return @"4.9";
+        }
+        else
+        {
+            return @"4.87";
+        }
     }
-    else if ([deviceType isEqualToString:@"iPhone 6"] || [deviceType isEqualToString:@"iPhone 6s"])
+    else if ([deviceType isEqualToString:@"iPhone 6"] || [deviceType isEqualToString:@"iPhone 6s"] || [deviceType isEqualToString:@"iPhone 7"])
     {
         return @"5.44";
     }
-    else if ([deviceType isEqualToString:@"iPhone 6 Plus"] || [deviceType isEqualToString:@"iPhone 6s Plus"])
+    else if ([deviceType isEqualToString:@"iPhone 6 Plus"] || [deviceType isEqualToString:@"iPhone 6s Plus"] || [deviceType isEqualToString:@"iPhone 7 Plus"])
     {
-        return @"6.23";
+        if ([deviceType isEqualToString:@"iPhone 6 Plus"])
+        {
+            return @"6.22";
+        }
+        else
+        {
+            return @"6.23";
+        }
     }
     
     return @"0.00";

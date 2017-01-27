@@ -12,9 +12,5 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
-//https://forums.developer.apple.com/thread/28997
-//http://stackoverflow.com/questions/13689864/ios-saving-photo-to-camera-roll-does-not-preserve-exif-gps-metadata
-//https://developer.apple.com/library/ios/qa/qa1622/_index.html
-
 @end
 
