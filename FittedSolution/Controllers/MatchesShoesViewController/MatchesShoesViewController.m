@@ -47,9 +47,7 @@
 {
     [super viewDidLoad];
     
-    
     _categories = [[NSArray alloc] initWithObjects:Dress, Dress_Casual, Casual, nil];
-    
     
     category_A_Shoes = [[NSArray alloc] initWithObjects:@"dressport modern+", @"DresSports 2 Lite Apron Toe", @"DresSports 2 Lite Bike Toe Slip-On", @"DresSports 2 Lite Plain Toe Oxford", @"DresSports 2 Lite Wingtip", @"DresSports Luxe Apron Toe Oxford", @"DresSports Luxe Bike Toe Slip-On", @"DresSports Luxe Cap Toe Oxford", @"DresSports Luxe Wingtip Oxford", @"DresSports Modern Apron Toe", @"DresSports Modern Bike Toe Slip-On", @"DresSports Modern Cap Toe", @"DresSports Modern Chelsea", @"DresSports Modern Wingtip", nil];
     category_B_Shoes = [[NSArray alloc] initWithObjects:@"Get Your Kicks Blucher", @"Get Your Kicks Mudguard Blucher", @"Get Your Kicks Slip On", nil];
@@ -162,7 +160,6 @@
         [_mainViewContainer addSubview:countLabel];
         [_mainViewContainer addSubview:scrollViewContainer];
         
-        
         if (count == 0)
         {
             countLabel.text           = [NSString stringWithFormat:@"%ld",(long)category_A_count];
@@ -232,7 +229,6 @@
                 buttonRight.userInteractionEnabled = NO;
             }
         }
-        
         count +=1;
     }
     _totalMatchesLabel.text = [NSString stringWithFormat:@"Total Matched Items: %d",totalMatchedItems];
@@ -279,7 +275,6 @@ int category_int = 0;
     
     float xAxis = padding;
     
-    
     // random work
     NSMutableArray *shoes_Array = [shoesArray mutableCopy];
     
@@ -321,7 +316,6 @@ int category_int = 0;
     }
     category_int +=1;
     //
-    
     
     for(int i=0 ; i < shoes_Array.count ; i++)
     {
@@ -382,7 +376,7 @@ int category_int = 0;
     
     if (scrollOffset == 0)
     {
-        NSLog(@"Right -- Start");
+        //NSLog(@"Right -- Start");
         
         if (scrollView.tag == 0 && category_A_count > 3)
         {
@@ -402,7 +396,7 @@ int category_int = 0;
     }
     else if (scrollOffset + scrollViewWidth == scrollContentSizeWidth)
     {
-        NSLog(@"Right -- End");
+        //NSLog(@"Right -- End");
         
         if (scrollView.tag == 0 && category_A_count > 3)
         {
@@ -421,7 +415,6 @@ int category_int = 0;
         }
     }
 }
-
 
 - (void) buttonLeftClicked:(id)sender
 {
@@ -448,16 +441,13 @@ int category_int = 0;
     
     [scroll_View scrollRectToVisible:toVisible animated:YES];
     
-    
-    
     float scrollViewWidth = scroll_View.frame.size.width;
     float scrollContentSizeWidth = scroll_View.contentSize.width;
     float scrollOffset = scroll_View.contentOffset.x;
     
     if (scrollOffset == 0)
     {
-        NSLog(@"Left -- Start");
-        
+        //NSLog(@"Left -- Start");
 //        if (button.tag == 0)
 //        {
 //            [buttonLeft_Category_A setImage:[UIImage imageNamed:@"LeftArrowOFF"] forState:UIControlStateNormal];
@@ -476,7 +466,7 @@ int category_int = 0;
     }
     else if (scrollOffset + scrollViewWidth == scrollContentSizeWidth)
     {
-        NSLog(@"Left -- End");
+        //NSLog(@"Left -- End");
         
         if (button.tag == 0 && category_A_count > 3)
         {
@@ -494,30 +484,6 @@ int category_int = 0;
             [buttonRight_Category_C setImage:[UIImage imageNamed:@"RightArrowON"] forState:UIControlStateNormal];
         }
     }
-    
-//    // check the end of scrollview
-//    CGFloat rightInset = scroll_View.contentInset.right;
-//    CGFloat rightEdge = scroll_View.contentOffset.x + scroll_View.frame.size.width - rightInset;
-//    if (rightEdge == scroll_View.contentSize.width)
-//    {
-//        NSLog(@"End of scrol view");
-//        
-//        if (button.tag == 0)
-//        {
-//            [buttonLeft_Category_A setImage:[UIImage imageNamed:@"LeftArrowOFF"] forState:UIControlStateNormal];
-//            [buttonRight_Category_A setImage:[UIImage imageNamed:@"RightArrowON"] forState:UIControlStateNormal];
-//        }
-//        else if (button.tag == 2)
-//        {
-//            [buttonLeft_Category_B setImage:[UIImage imageNamed:@"LeftArrowOFF"] forState:UIControlStateNormal];
-//            [buttonRight_Category_B setImage:[UIImage imageNamed:@"RightArrowON"] forState:UIControlStateNormal];
-//        }
-//        else if (button.tag == 4)
-//        {
-//            [buttonLeft_Category_C setImage:[UIImage imageNamed:@"LeftArrowOFF"] forState:UIControlStateNormal];
-//            [buttonRight_Category_C setImage:[UIImage imageNamed:@"RightArrowON"] forState:UIControlStateNormal];
-//        }
-//    }
 }
 
 - (void) buttonRightClicked:(id)sender
@@ -545,14 +511,13 @@ int category_int = 0;
     
     [scroll_View scrollRectToVisible:toVisible animated:YES];
     
-    
     float scrollViewWidth = scroll_View.frame.size.width;
     float scrollContentSizeWidth = scroll_View.contentSize.width;
     float scrollOffset = scroll_View.contentOffset.x;
     
     if (scrollOffset == 0)
     {
-        NSLog(@"Right -- Start");
+        //NSLog(@"Right -- Start");
         
         if (button.tag == 1 && category_A_count > 3)
         {
@@ -572,7 +537,7 @@ int category_int = 0;
     }
     else if (scrollOffset + scrollViewWidth == scrollContentSizeWidth)
     {
-        NSLog(@"Right -- End");
+        //NSLog(@"Right -- End");
         
 //        if (button.tag == 1)
 //        {
@@ -590,31 +555,6 @@ int category_int = 0;
 //            [buttonRight_Category_C setImage:[UIImage imageNamed:@"RightArrowON"] forState:UIControlStateNormal];
 //        }
     }
-    
-    
-//    // check the start of scrollview
-//    CGFloat leftInset = scroll_View.contentInset.left;
-//    CGFloat leftEdge = scroll_View.frame.size.width - scroll_View.contentOffset.x - leftInset;
-//    if (leftEdge == scroll_View.contentSize.width)
-//    {
-//        NSLog(@"Start of scrol view");
-//        
-//        if (button.tag == 0)
-//        {
-//            [buttonLeft_Category_A setImage:[UIImage imageNamed:@"RightArrowOFF"] forState:UIControlStateNormal];
-//            [buttonRight_Category_A setImage:[UIImage imageNamed:@"LeftArrowON"] forState:UIControlStateNormal];
-//        }
-//        else if (button.tag == 2)
-//        {
-//            [buttonLeft_Category_B setImage:[UIImage imageNamed:@"RightArrowOFF"] forState:UIControlStateNormal];
-//            [buttonRight_Category_B setImage:[UIImage imageNamed:@"LeftArrowON"] forState:UIControlStateNormal];
-//        }
-//        else if (button.tag == 4)
-//        {
-//            [buttonLeft_Category_C setImage:[UIImage imageNamed:@"RightArrowOFF"] forState:UIControlStateNormal];
-//            [buttonRight_Category_C setImage:[UIImage imageNamed:@"LeftArrowON"] forState:UIControlStateNormal];
-//        }
-//    }
 }
 
 - (void)showThumbnailTapped:(id)sender
@@ -643,93 +583,6 @@ int category_int = 0;
         tapRecognizer.view.tag = (tapRecognizer.view.tag) - 2 * (tapRecognizer.view.tag);
     }
 }
-
--(void)getCategoryNameOfShoeNamed:(NSString *)shoeImageName
-{
-    NSString * categoryName;
-    
-    if ([shoeImageName containsString:@"DresSports"] || [shoeImageName containsString:@"dressport"])
-    {
-        categoryName = Dress;
-    }
-    else if([shoeImageName containsString:@"Total Motion"])
-    {
-        categoryName = Dress_Casual;
-    }
-    else if([shoeImageName containsString:@"Get Your Kicks"])
-    {
-        categoryName = Casual;
-    }
-}
-
-#pragma mark- scrollview delegate method
-
-//-(void)scrollViewDidScroll:(UIScrollView *)sender
-//{
-//    CGFloat pageWidth = sender.frame.size.width;
-//    int page = floor((sender.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
-//    
-//    //self.pageControl.currentPage = page;
-//}
-
-//        if(count == 1)
-//        {
-//            // Category 1
-//            categoryName              = [[UILabel alloc] initWithFrame:CGRectMake(17, 24, 50, 21)];
-//            categoryName              = [self adjustWidthOfLabel:categoryName forText:category];
-//
-//            countBackgound            = [[UIImageView alloc] initWithFrame:CGRectMake(categoryName.frame.origin.x+categoryName.frame.size.width+10, categoryName.frame.origin.y-2, 17,17)];
-//            countBackgound.image      = [UIImage imageNamed:@"CountBackground"];
-//
-//            countLabel.textColor      = [UIColor whiteColor];
-//            countLabel                = [[UILabel alloc] initWithFrame:countBackgound.frame];
-//            countLabel.font           = [UIFont fontWithName:@"HelveticaNeue-Bold" size:10];
-//            countLabel.textAlignment  = NSTextAlignmentCenter;
-//            countLabel.text           = @"15";
-//
-//            scrollViewContainer       = [[UIView alloc] initWithFrame:CGRectMake(0, categoryName.frame.origin.y+categoryName.frame.size.height+10, self.view.frame.size.width, 110)];
-//            scrollViewContainer.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-//
-//        }
-//        else if (count == 2)
-//        {
-//            // Category 2
-//            //categoryName               = [[UILabel alloc] initWithFrame:CGRectMake(17, 215, 50, 21)];
-//
-//            categoryName               = [[UILabel alloc] initWithFrame:CGRectMake(17, scrollViewContainer.frame.origin.y+scrollViewContainer.frame.size.height+10, 50, 21)];
-//            categoryName               = [self adjustWidthOfLabel:categoryName forText:category];
-//
-//            countBackgound             = [[UIImageView alloc] initWithFrame:CGRectMake(categoryName.frame.origin.x+categoryName.frame.size.width+10, categoryName.frame.origin.y-2, 17,17)];
-//            countBackgound.image       = [UIImage imageNamed:@"CountBackground"];
-//
-//            countLabel.textColor       = [UIColor whiteColor];
-//            countLabel                 = [[UILabel alloc] initWithFrame:countBackgound.frame];
-//            countLabel.font            = [UIFont fontWithName:@"HelveticaNeue-Bold" size:10];
-//            countLabel.textAlignment   = NSTextAlignmentCenter;
-//            countLabel.text            = @"15";
-//
-//            scrollViewContainer       = [[UIView alloc] initWithFrame:CGRectMake(0, categoryName.frame.origin.y+categoryName.frame.size.height+10, self.view.frame.size.width, 110)];
-//        }
-//        else if (count == 3)
-//        {
-//            // Category 3
-//            //categoryName              = [[UILabel alloc] initWithFrame:CGRectMake(17, 374, 50, 21)];
-//
-//            categoryName              = [[UILabel alloc] initWithFrame:CGRectMake(17, scrollViewContainer.frame.origin.y+scrollViewContainer.frame.size.height+10, 50, 21)];
-//            categoryName              = [self adjustWidthOfLabel:categoryName forText:category];
-//
-//            countBackgound            = [[UIImageView alloc] initWithFrame:CGRectMake(categoryName.frame.origin.x+categoryName.frame.size.width+10, categoryName.frame.origin.y-2, 17,17)];
-//            countBackgound.image      = [UIImage imageNamed:@"CountBackground"];
-//
-//            countLabel.textColor      = [UIColor whiteColor];
-//            countLabel                = [[UILabel alloc] initWithFrame:countBackgound.frame];
-//            countLabel.font           = [UIFont fontWithName:@"HelveticaNeue-Bold" size:10];
-//            countLabel.textAlignment  = NSTextAlignmentCenter;
-//            countLabel.text           = @"5";
-//
-//            scrollViewContainer       = [[UIView alloc] initWithFrame:CGRectMake(0, categoryName.frame.origin.y+categoryName.frame.size.height+10, self.view.frame.size.width, 110)];
-//
-//        }
 
 
 @end

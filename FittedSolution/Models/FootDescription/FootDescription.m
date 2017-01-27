@@ -12,7 +12,7 @@
 
 @synthesize sideID          ;
 @synthesize resultID        ;
-@synthesize footWidh        ;
+//@synthesize footWidh        ;
 @synthesize footLength      ;
 @synthesize archHeight      ;
 @synthesize archDistance    ;
@@ -30,5 +30,7 @@
 @synthesize women_UK        ;
 @synthesize menWidthCode    ;
 @synthesize womenWidthCode  ;
+@synthesize sideFootCutOutImageUrl;
+@synthesize frontFootCutOutImageUrl;
 
 @end

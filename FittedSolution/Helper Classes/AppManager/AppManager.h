@@ -31,6 +31,7 @@ typedef struct BoundedBox BoundedBox;
 
 +(AppManager *)sharedInstance;
 
+@property(nonatomic,assign) BOOL is_Haar;
 @property (nonatomic, strong) MainViewController *rootViewController;
 
 - (NSString *)getDeviceiOSVersion;

@@ -37,18 +37,10 @@
 
 -(void)uploadSideFootImageForSegmentation:(NSData *)sideFootImageData withSideFootBoundedBox:(BoundedBox)sideFootBox andPhoneBoundedBox:(BoundedBox)phoneBox block:(void (^)(FootDescription *))response errorMessage:(void(^)(NSString *)) error
 {
-    NSLog(@"Windows--> Side Foot JPEG Image length : %f Kb",(unsigned long)sideFootImageData.length/1024.0f);
-    NSLog(@"Windows--> Side Foot JPEG Image length : %f Mb",(unsigned long)sideFootImageData.length/1024.0f/1024.0);
+    //NSLog(@"Windows--> Side Foot JPEG Image length : %f Kb",(unsigned long)sideFootImageData.length/1024.0f);
+    //NSLog(@"Windows--> Side Foot JPEG Image length : %f Mb",(unsigned long)sideFootImageData.length/1024.0f/1024.0);
     
-    NSString * deviceLength;
-    if (linux_webservice_manager.isHaar)
-    {
-        deviceLength  = [UIDeviceHardware deviceLength];
-    }
-    else
-    {
-        deviceLength  = @"5.44";
-    }
+    NSString * deviceLength  = @"5.44"; //[UIDeviceHardware deviceLength];
     
     NSDictionary * headers              = @{ @"SOAPAction": @"http://tempuri.org/SideFootUpload",
                                              @"content-type": @"text/xml; charset=utf-8",
@@ -71,7 +63,6 @@
                                                                 [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"utf-8\"?><soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><SideFootUpload xmlns=\"http://tempuri.org/\"><Image>%@</Image><pointA>%@</pointA><pointB>%@</pointB><pointC>%@</pointC><pointD>%@</pointD><Left_x1_device>%@</Left_x1_device><Top_y1_device>%@</Top_y1_device><width_device>%@</width_device><height_device>%@</height_device><deviceLengthFromCode>%@</deviceLengthFromCode></SideFootUpload></soap:Body></soap:Envelope>",base64String,sideFootBoxX,sideFootBoxY,sideFootBoxW,sideFootBoxH,phoneBoxX,phoneBoxY,phoneBoxW,phoneBoxH, deviceLength]
                                                                 dataUsingEncoding:NSUTF8StringEncoding]
                                                             ];
-    
     
     NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:WINDOWS_SIDE_FOOT_IMAGE_SEGMENTATIONUPLOAD_URL] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10.0];
     
@@ -112,15 +103,15 @@
                 footDescription.archDistance = [[[[[[responseDict valueForKey:@"Envelope"] valueForKey:@"Body"] valueForKey:@"SideFootUploadResponse"] valueForKey:@"SideFootUploadResult"] valueForKey:@"ArchDistance"] valueForKey:@"text"];
                 footDescription.archHeight   = [[[[[[responseDict valueForKey:@"Envelope"] valueForKey:@"Body"] valueForKey:@"SideFootUploadResponse"] valueForKey:@"SideFootUploadResult"] valueForKey:@"ArchHeight"] valueForKey:@"text"];
                 footDescription.footLength   = [[[[[[responseDict valueForKey:@"Envelope"] valueForKey:@"Body"] valueForKey:@"SideFootUploadResponse"] valueForKey:@"SideFootUploadResult"] valueForKey:@"FootLength"] valueForKey:@"text"];
-                footDescription.men_Euro     = [[[[[[responseDict valueForKey:@"Envelope"] valueForKey:@"Body"] valueForKey:@"SideFootUploadResponse"]valueForKey:@"SideFootUploadResult"] valueForKey:@"MenEuro"] valueForKey:@"text"];
+                footDescription.men_Euro     = [[[[[[responseDict valueForKey:@"Envelope"] valueForKey:@"Body"] valueForKey:@"SideFootUploadResponse"] valueForKey:@"SideFootUploadResult"] valueForKey:@"MenEuro"] valueForKey:@"text"];
                 footDescription.men_UK       = [[[[[[responseDict valueForKey:@"Envelope"] valueForKey:@"Body"] valueForKey:@"SideFootUploadResponse"] valueForKey:@"SideFootUploadResult"] valueForKey:@"MenUK"] valueForKey:@"text"];
-                footDescription.men_US       = [[[[[[responseDict valueForKey:@"Envelope"] valueForKey:@"Body"] valueForKey:@"SideFootUploadResponse"]valueForKey:@"SideFootUploadResult"] valueForKey:@"MenUS"] valueForKey:@"text"];
-                footDescription.resultID     = [[[[[[responseDict valueForKey:@"Envelope"] valueForKey:@"Body"] valueForKey:@"SideFootUploadResponse"]valueForKey:@"SideFootUploadResult"] valueForKey:@"ResultID"] valueForKey:@"text"];
+                footDescription.men_US       = [[[[[[responseDict valueForKey:@"Envelope"] valueForKey:@"Body"] valueForKey:@"SideFootUploadResponse"] valueForKey:@"SideFootUploadResult"] valueForKey:@"MenUS"] valueForKey:@"text"];
+                footDescription.resultID     = [[[[[[responseDict valueForKey:@"Envelope"] valueForKey:@"Body"] valueForKey:@"SideFootUploadResponse"] valueForKey:@"SideFootUploadResult"] valueForKey:@"ResultID"] valueForKey:@"text"];
                 footDescription.sideID       = [[[[[[responseDict valueForKey:@"Envelope"] valueForKey:@"Body"] valueForKey:@"SideFootUploadResponse"] valueForKey:@"SideFootUploadResult"] valueForKey:@"SideID"] valueForKey:@"text"];
-                footDescription.talusHeight  = [[[[[[responseDict valueForKey:@"Envelope"] valueForKey:@"Body"] valueForKey:@"SideFootUploadResponse"]valueForKey:@"SideFootUploadResult"] valueForKey:@"TalusHeight"] valueForKey:@"text"];
+                footDescription.talusHeight  = [[[[[[responseDict valueForKey:@"Envelope"] valueForKey:@"Body"] valueForKey:@"SideFootUploadResponse"] valueForKey:@"SideFootUploadResult"] valueForKey:@"TalusHeight"] valueForKey:@"text"];
                 footDescription.talusSlope   = [[[[[[responseDict valueForKey:@"Envelope"] valueForKey:@"Body"] valueForKey:@"SideFootUploadResponse"]valueForKey:@"SideFootUploadResult"] valueForKey:@"TalusSlope"] valueForKey:@"text"];
-                footDescription.toeBoxHeight = [[[[[[responseDict valueForKey:@"Envelope"] valueForKey:@"Body"] valueForKey:@"SideFootUploadResponse"]valueForKey:@"SideFootUploadResult"] valueForKey:@"ToeBoxHeight"] valueForKey:@"text"];
-                footDescription.women_Euro   = [[[[[[responseDict valueForKey:@"Envelope"] valueForKey:@"Body"] valueForKey:@"SideFootUploadResponse"]valueForKey:@"SideFootUploadResult"] valueForKey:@"WomenEuro"] valueForKey:@"text"];
+                footDescription.toeBoxHeight = [[[[[[responseDict valueForKey:@"Envelope"] valueForKey:@"Body"] valueForKey:@"SideFootUploadResponse"] valueForKey:@"SideFootUploadResult"] valueForKey:@"ToeBoxHeight"] valueForKey:@"text"];
+                footDescription.women_Euro   = [[[[[[responseDict valueForKey:@"Envelope"] valueForKey:@"Body"] valueForKey:@"SideFootUploadResponse"] valueForKey:@"SideFootUploadResult"] valueForKey:@"WomenEuro"] valueForKey:@"text"];
                 footDescription.women_UK     = [[[[[[responseDict valueForKey:@"Envelope"]valueForKey:@"Body"] valueForKey:@"SideFootUploadResponse"]valueForKey:@"SideFootUploadResult"] valueForKey:@"WomenUK"] valueForKey:@"text"];
                 footDescription.women_US     = [[[[[[responseDict valueForKey:@"Envelope"] valueForKey:@"Body"] valueForKey:@"SideFootUploadResponse"]                  valueForKey:@"SideFootUploadResult"] valueForKey:@"WomenUS"] valueForKey:@"text"];
                  
@@ -133,21 +124,11 @@
 
 -(void)uploadFrontFootImageForSegmentation:(NSData *)frontFootImageData withFrontFootBoundedBox:(BoundedBox)frontFootBox phoneBoundedBox:(BoundedBox)phoneBox sideID:(NSString *)sideID andResultID:(NSString *)resultID block:(void (^)(FootDescription *))response errorMessage:(void(^)(NSString *)) error
 {
-    NSLog(@"Windows--> Front Foot JPEG Image length : %f Kb",(unsigned long)frontFootImageData.length/10240.0f);
-    NSLog(@"Windows--> Front Foot JPEG Image length : %f Mb",(unsigned long)frontFootImageData.length/10240.0f/1024.0f);
+    //NSLog(@"Windows--> Front Foot JPEG Image length : %f Kb",(unsigned long)frontFootImageData.length/10240.0f);
+    //NSLog(@"Windows--> Front Foot JPEG Image length : %f Mb",(unsigned long)frontFootImageData.length/10240.0f/1024.0f);
     
-    NSLog(@"------------____------ resultID : %@",resultID);
-    
-    NSString * deviceLength;
-    if (linux_webservice_manager.isHaar)
-    {
-        deviceLength  = [UIDeviceHardware deviceLength];
-    }
-    else
-    {
-        deviceLength  = @"5.44";
-    }
-    
+    NSString * deviceLength = @"5.44"; //[UIDeviceHardware deviceLength];
+
     NSDictionary * headers              =   @{ @"SOAPAction": @"http://tempuri.org/FrontFootUpload",
                                                @"content-type": @"text/xml; charset=utf-8",
                                                @"cache-control": @"no-cache",

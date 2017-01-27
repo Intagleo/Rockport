@@ -31,4 +31,8 @@
 @property (nonatomic, strong) NSString * menWidthCode       ;
 @property (nonatomic, strong) NSString * womenWidthCode     ;
 
+@property (nonatomic, strong) NSString * sideFootCutOutImageUrl  ;
+@property (nonatomic, strong) NSString * frontFootCutOutImageUrl ;
+
+
 @end

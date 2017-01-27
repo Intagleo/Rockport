@@ -199,16 +199,8 @@
     
     //// write text for foot on image
     
-    NSString *text;
-    if (linux_webservice_manager.isHaar)
-    {
-        text = [NSString stringWithFormat:@"Haar :\nFoot Box --> x: %d, y: %d, w: %d, h: %d",footBox.x,footBox.y,footBox.w,footBox.h];
-    }
-    else
-    {
-        text = [NSString stringWithFormat:@"CNN :\nFoot Box --> x: %d, y: %d, w: %d, h: %d",footBox.x,footBox.y,footBox.w,footBox.h];
-    }
-    
+    NSString *text = [NSString stringWithFormat:@"Foot Box --> x: %d, y: %d, w: %d, h: %d",footBox.x,footBox.y,footBox.w,footBox.h];
+
     UIFont *font = [UIFont boldSystemFontOfSize:30];
     CGRect rect = CGRectMake(10, 10, image.size.width, 70); //CGRectMake(footBox.x, footBox.y-50, image.size.width, image.size.height);
     [[UIColor whiteColor] set];
@@ -245,7 +237,6 @@
     
     //////////////////// for phone end
     
-    
     // make image out of bitmap context
     UIImage *retImage = UIGraphicsGetImageFromCurrentImageContext();
     
@@ -258,9 +249,7 @@
     // cropped bounded box of foot image
     UIImage *croppedImage = [retImage croppedImage:footBoxRect];
     UIImageWriteToSavedPhotosAlbum(croppedImage, self, nil, nil);
-    
 }
-
 
 -(BOOL)isInternetAvailable
 {
@@ -299,7 +288,6 @@
         self.rootViewController.cameraButton.userInteractionEnabled   = NO;
         self.rootViewController.menuButton.userInteractionEnabled     = NO;
         self.rootViewController.infoButton.userInteractionEnabled     = NO;
-        self.rootViewController.segmentControl.userInteractionEnabled = NO;
     });
 }
 
@@ -312,7 +300,6 @@
         self.rootViewController.cameraButton.userInteractionEnabled   = YES;
         self.rootViewController.menuButton.userInteractionEnabled     = YES;
         self.rootViewController.infoButton.userInteractionEnabled     = YES;
-        self.rootViewController.segmentControl.userInteractionEnabled = YES;
     });
 }
 
@@ -340,7 +327,7 @@
                                             style:UIAlertActionStyleDestructive
                                             handler:^(UIAlertAction *action)
                                             {
-                                                [self stopAnimatingActivityIndicator];
+                                                //[self stopAnimatingActivityIndicator]; //1122
                                                 [self resetApp];
                                             }];
         
@@ -363,7 +350,7 @@
 {
     dispatch_async(dispatch_get_main_queue(), ^
     {
-        [self stopAnimatingActivityIndicator];
+        //[self stopAnimatingActivityIndicator]; //1122
         if (self.rootViewController.step == StepOne || self.rootViewController.step == StepOneRepeat)
         {
             self.rootViewController.resetButton.hidden = YES;
@@ -518,7 +505,7 @@
     {
         if (alertView.tag == 5000)  // Reset - alert view
         {
-            [self stopAnimatingActivityIndicator];
+            //[self stopAnimatingActivityIndicator]; //1122
             [self resetApp];
         }
     }
@@ -578,6 +565,8 @@
     
     self.rootViewController.resetButton.hidden  = YES;
     self.rootViewController.step                = StepOne;
+    [self.rootViewController resetAppData];
+    
     //[self.rootViewController dismissImagePickerController];
     [text_to_speech_manager readText:@"welcome to fitted solution, tap on info for app instructions." afterDelay:0.1];
 }
@@ -662,7 +651,7 @@
         TIFFDictionary = [NSMutableDictionary dictionary];
     }
     
-    NSLog(@"Device Name : %@", [UIDeviceHardware platformString]);
+    //NSLog(@"Device Name : %@", [UIDeviceHardware platformString]);
     
     if ([[UIDeviceHardware platformString] hasPrefix:@"iPhone"])
     {
@@ -688,7 +677,7 @@
     
     if(!destination)
     {
-        NSLog(@"***Could not create image destination ***");
+        //NSLog(@"***Could not create image destination ***");
     }
     
     //add the image contained in the image source to the destination, overidding the old metadata with our modified metadata
@@ -701,7 +690,7 @@
     
     if(!success)
     {
-        NSLog(@"***Could not create data from image destination ***");
+        //NSLog(@"***Could not create data from image destination ***");
     }
     
     //now we have the data ready to go, so do whatever you want with it

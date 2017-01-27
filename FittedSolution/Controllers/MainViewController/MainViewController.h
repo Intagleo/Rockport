@@ -22,14 +22,11 @@ enum Step
 
 @property enum Step step                    ;
 
-/*
- *
- *  Segment Outlet and Action
- *
- */
-
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
 - (IBAction)segmentDidChange:(UISegmentedControl *)sender;
+
+@property (weak, nonatomic) IBOutlet UILabel *progressSatusLabel;
+@property (weak, nonatomic) IBOutlet UIProgressView *progressView;
 
 /*
  *
@@ -58,8 +55,9 @@ enum Step
 
 @property (weak, nonatomic) IBOutlet UIView * popUpContainerView;
 @property (weak, nonatomic) IBOutlet UIView * popUpView;
-- (IBAction)popUpOkButtonAction:(id)sender;
+@property (weak, nonatomic) IBOutlet UIImageView *popUpViewImageView;
 
+- (IBAction)popUpOkButtonAction:(id)sender;
 
 /*
  *
@@ -67,6 +65,7 @@ enum Step
  *
  */
 
+-(void)resetAppData; 
 -(void)presentImagePicker;
 -(void)removeTutorialViewFromMainViewWithAnimation:(NSString *)animation;
 -(void)dismissImagePickerController;

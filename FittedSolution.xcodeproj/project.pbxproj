@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C50C19AD1E27673900A643FB /* blue.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C50C19AC1E27673900A643FB /* blue.jpg */; };
 		C51D63901D5DB8190085413B /* UIDeviceHardware.m in Sources */ = {isa = PBXBuildFile; fileRef = C51D638F1D5DB8190085413B /* UIDeviceHardware.m */; };
 		C53D4EC71D8ADE7700A25453 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C53D4EC61D8ADE7700A25453 /* TutorialViewController.m */; };
 		C558A8B81DA4EE1000829E53 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C558A8B71DA4EE1000829E53 /* SWRevealViewController.m */; };
@@ -114,9 +115,11 @@
 		C5C958341DA669D800502F11 /* Total Motion PS Chelsea.PNG in Resources */ = {isa = PBXBuildFile; fileRef = C5C9581C1DA669D800502F11 /* Total Motion PS Chelsea.PNG */; };
 		C5C958351DA669D800502F11 /* Total Motion PS Plain Toe.PNG in Resources */ = {isa = PBXBuildFile; fileRef = C5C9581D1DA669D800502F11 /* Total Motion PS Plain Toe.PNG */; };
 		C5C958361DA669D800502F11 /* Total Motion PS Wing Tip.PNG in Resources */ = {isa = PBXBuildFile; fileRef = C5C9581E1DA669D800502F11 /* Total Motion PS Wing Tip.PNG */; };
+		C5F6AC3F1E28BE2F002D9983 /* CustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5F6AC3E1E28BE2F002D9983 /* CustomView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C50C19AC1E27673900A643FB /* blue.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = blue.jpg; sourceTree = "<group>"; };
 		C51D638E1D5DB8190085413B /* UIDeviceHardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIDeviceHardware.h; sourceTree = "<group>"; };
 		C51D638F1D5DB8190085413B /* UIDeviceHardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIDeviceHardware.m; sourceTree = "<group>"; };
 		C53D4EC51D8ADE7700A25453 /* TutorialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutorialViewController.h; sourceTree = "<group>"; };
@@ -246,6 +249,8 @@
 		C5C9581C1DA669D800502F11 /* Total Motion PS Chelsea.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Total Motion PS Chelsea.PNG"; sourceTree = "<group>"; };
 		C5C9581D1DA669D800502F11 /* Total Motion PS Plain Toe.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Total Motion PS Plain Toe.PNG"; sourceTree = "<group>"; };
 		C5C9581E1DA669D800502F11 /* Total Motion PS Wing Tip.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Total Motion PS Wing Tip.PNG"; sourceTree = "<group>"; };
+		C5F6AC3D1E28BE2F002D9983 /* CustomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomView.h; sourceTree = "<group>"; };
+		C5F6AC3E1E28BE2F002D9983 /* CustomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -325,6 +330,16 @@
 				C558A8DF1DA528AB00829E53 /* tutorialScreen13@3x.jpg */,
 			);
 			path = TutorialImages;
+			sourceTree = "<group>";
+		};
+		C55645ED1E3B259200C0BD00 /* CustomView */ = {
+			isa = PBXGroup;
+			children = (
+				C5F6AC3D1E28BE2F002D9983 /* CustomView.h */,
+				C5F6AC3E1E28BE2F002D9983 /* CustomView.m */,
+			);
+			name = CustomView;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		C558A8B51DA4EE1000829E53 /* SWRevealViewController */ = {
@@ -495,6 +510,7 @@
 		C587BAB81D2B9C8E0090EB4A /* Helper Classes */ = {
 			isa = PBXGroup;
 			children = (
+				C55645ED1E3B259200C0BD00 /* CustomView */,
 				C587BAD41D2BCEE30090EB4A /* AppManager */,
 				C59EAA321D8C00470065EB55 /* CacheManager */,
 				C587BACC1D2BCD6D0090EB4A /* LinuxWebserviceManager */,
@@ -585,6 +601,7 @@
 		C5B203231D5B0173006FB7BE /* OtherImages */ = {
 			isa = PBXGroup;
 			children = (
+				C50C19AC1E27673900A643FB /* blue.jpg */,
 				C5C958061DA663C100502F11 /* ShoesThumbnail */,
 				C53D4EC81D8AE06200A25453 /* TutorialImages */,
 				C5B203491D5B027A006FB7BE /* ActivityAnimationImages */,
@@ -736,6 +753,7 @@
 				C5C958201DA669D800502F11 /* DresSports 2 Lite Apron Toe.PNG in Resources */,
 				C5C958251DA669D800502F11 /* DresSports Luxe Bike Toe Slip-On.PNG in Resources */,
 				C5C958321DA669D800502F11 /* Total Motion Fusion Wing Tip.PNG in Resources */,
+				C50C19AD1E27673900A643FB /* blue.jpg in Resources */,
 				C558A9021DA528AB00829E53 /* tutorialScreen12@2x.jpg in Resources */,
 				C5B203651D5B027A006FB7BE /* loading5.png in Resources */,
 				C558A8F71DA528AB00829E53 /* tutorialScreen8@3x.jpg in Resources */,
@@ -817,6 +835,7 @@
 				C587BAD31D2BCD8B0090EB4A /* WindowsWebserviceManager.m in Sources */,
 				C584B3DC1D4F54230070963E /* UIImage+RoundedCorner.m in Sources */,
 				C584B3E41D4F69900070963E /* FootDescription.m in Sources */,
+				C5F6AC3F1E28BE2F002D9983 /* CustomView.m in Sources */,
 				C5C958021DA632F200502F11 /* MatchesShoesViewController.m in Sources */,
 				C584B3DA1D4F54230070963E /* UIImage+Alpha.m in Sources */,
 				C587BAB41D2B8B600090EB4A /* MainViewController.m in Sources */,
@@ -943,8 +962,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Muhammad Khabbab (S9M45XJ475)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Muhammad Khabbab (S9M45XJ475)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Fitted Solutions, LLC";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Fitted Solutions, LLC";
 				DEVELOPMENT_TEAM = LTU84WB6VE;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -956,8 +975,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.intagleo.rockport;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "985ad616-541d-4634-9c42-0c372d0c5078";
-				PROVISIONING_PROFILE_SPECIFIER = WildCard_DevelopmentProvisioningProfile;
+				PROVISIONING_PROFILE = "3ef1d406-9409-42cb-b0b0-edfabad4d7d1";
+				PROVISIONING_PROFILE_SPECIFIER = Rockport_InHouseProvisioningProfile;
 			};
 			name = Debug;
 		};
@@ -966,8 +985,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Muhammad Khabbab (S9M45XJ475)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Muhammad Khabbab (S9M45XJ475)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Fitted Solutions, LLC";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Fitted Solutions, LLC";
 				DEVELOPMENT_TEAM = LTU84WB6VE;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -979,8 +998,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.intagleo.rockport;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "985ad616-541d-4634-9c42-0c372d0c5078";
-				PROVISIONING_PROFILE_SPECIFIER = WildCard_DevelopmentProvisioningProfile;
+				PROVISIONING_PROFILE = "3ef1d406-9409-42cb-b0b0-edfabad4d7d1";
+				PROVISIONING_PROFILE_SPECIFIER = Rockport_InHouseProvisioningProfile;
 			};
 			name = Release;
 		};

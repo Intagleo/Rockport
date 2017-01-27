@@ -39,17 +39,17 @@
     _session = [AVAudioSession sharedInstance];
     [_session setCategory:AVAudioSessionCategoryPlayback error:nil];
     
-    _speechSynthesizer = [[AVSpeechSynthesizer alloc] init]             ;
-    [_speechSynthesizer setDelegate:self]                               ;
+    self.speechSynthesizer = [[AVSpeechSynthesizer alloc] init]             ;
+    [self.speechSynthesizer setDelegate:self]                               ;
 }
 
 -(void)readText:(NSString*)text afterDelay:(float)delay
 {
-    AVSpeechUtterance * utterance  = [AVSpeechUtterance speechUtteranceWithString:text]     ;
-    _synthesizeVoice               = [AVSpeechSynthesisVoice voiceWithLanguage:@"en-US"]    ;
-    utterance.voice                = _synthesizeVoice                                       ;
-    utterance.pitchMultiplier      = Pitch                                                  ;
-    utterance.volume               = Volume                                                 ;
+    self.synthesizeVoice           = [AVSpeechSynthesisVoice voiceWithLanguage:@"en-US"]        ;
+    AVSpeechUtterance * utterance  = [AVSpeechUtterance speechUtteranceWithString:text]         ;
+    utterance.pitchMultiplier      = Pitch                                                      ;
+    utterance.volume               = Volume                                                     ;
+    utterance.voice                = self.synthesizeVoice                                       ;
     
     if ([[app_manager getDeviceiOSVersion] floatValue] >= 9.0)
     {
@@ -69,21 +69,21 @@
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delay * NSEC_PER_SEC), dispatch_get_main_queue(), ^
     {
-        [_speechSynthesizer speakUtterance:utterance];
+        [self.speechSynthesizer speakUtterance:utterance];
     });
 }
 
 - (void)stopSpeaking
 {
-    [_speechSynthesizer stopSpeakingAtBoundary:AVSpeechBoundaryImmediate];
+    [self.speechSynthesizer stopSpeakingAtBoundary:AVSpeechBoundaryImmediate];
     //AVSpeechUtterance *utterance = [AVSpeechUtterance speechUtteranceWithString:@""];
-    //[_speechSynthesizer speakUtterance:utterance];
-    //[_speechSynthesizer stopSpeakingAtBoundary:AVSpeechBoundaryImmediate];
+    //[self.speechSynthesizer speakUtterance:utterance];
+    //[self.speechSynthesizer stopSpeakingAtBoundary:AVSpeechBoundaryImmediate];
 }
 
 -(BOOL)isSpeaking
 {
-    return [_speechSynthesizer isSpeaking];
+    return [self.speechSynthesizer isSpeaking];
 }
 
 #pragma mark - AVSpeechSynthesizerDelegate

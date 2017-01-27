@@ -47,11 +47,38 @@
     
     if (_sideFootDescription || _frontFootDescription)
     {
-        [self showFootSizeData];
+        if (app_manager.is_Haar)
+        {
+            [self showHAARFootSizeData];
+        }
+        else
+        {
+            [self showFootSizeData];
+        }
     }
     
-    _sideFootImageView.image = self.sideFootCroppedImage;
-    
+    if (app_manager.is_Haar)
+    {
+        _sideFootImageView.image = self.sideFootCroppedImage;
+    }
+    else
+    {
+        // side foot cutout image
+        NSURL* sideFootImageUrl   = [NSURL URLWithString:_sideFootDescription.sideFootCutOutImageUrl];
+        NSData* sideFootImageData = [[NSData alloc] initWithContentsOfURL:sideFootImageUrl];
+        self.sideFootCroppedImage = [UIImage imageWithData:sideFootImageData];
+        
+        _sideFootImageView.image = self.sideFootCroppedImage;
+        
+        
+        // front foot cutout image
+        NSURL* frontFootImageUrl   = [NSURL URLWithString:_frontFootDescription.frontFootCutOutImageUrl];
+        NSData* frontFootImageData = [[NSData alloc] initWithContentsOfURL:frontFootImageUrl];
+        self.frontFootCroppedImage = [UIImage imageWithData:frontFootImageData];
+        
+        _frontFootImageView.image = self.frontFootCroppedImage;
+    }
+
     [self enableRightArrowButton];
 }
 
@@ -88,6 +115,210 @@
 }
 
 -(void)showFootSizeData
+{
+    if (_frontFootDescription.footWidh.length == 0)
+    {
+        _footWidthTxt.text          = @"";
+        _frontFootViewWidthLbl.text = @"Width";
+    }
+    else
+    {
+        _footWidthTxt.text          = [NSString stringWithFormat:@"%.2f\" ",[_frontFootDescription.footWidh floatValue]];
+        _frontFootViewWidthLbl.text = [NSString stringWithFormat:@"Width : %.2f\" ",[_frontFootDescription.footWidh floatValue]];
+    }
+    
+    
+    if (_sideFootDescription.footLength.length == 0)
+    {
+        _footlengthTxt.text                 = @"";
+        _sideFootViewLengthLbl.text         = @"Length";
+    }
+    else
+    {
+        _footlengthTxt.text                 = [NSString stringWithFormat:@"%.2f\"",[_sideFootDescription.footLength floatValue]];
+        _sideFootViewLengthLbl.text         = [NSString stringWithFormat:@"Length : %.2f\"",[_sideFootDescription.footLength floatValue]];
+    }
+    
+    if (_sideFootDescription.archHeight.length == 0)
+    {
+        _archHeightTxt.text                 = @" ";
+        _sideFootViewArchLbl.text           = @"Arch Height";
+    }
+    else
+    {
+        _archHeightTxt.text                 = [NSString stringWithFormat:@"%.2f\"",[_sideFootDescription.archHeight floatValue]];
+        _sideFootViewArchLbl.text           = [NSString stringWithFormat:@"Arch Height : %.2f\"",[_sideFootDescription.archHeight floatValue]];
+    }
+    
+    if (_sideFootDescription.archDistance.length == 0)
+    {
+        _archDistanceTxt.text               = @" ";
+        _sideFootViewArchDistanceLbl.text   = @"Arch Distance";
+    }
+    else
+    {
+        _archDistanceTxt.text               = [NSString stringWithFormat:@"%.2f\"",[_sideFootDescription.archDistance floatValue]];
+        _sideFootViewArchDistanceLbl.text   = [NSString stringWithFormat:@"Arch Distance : %.2f\"",[_sideFootDescription.archDistance floatValue]];
+    }
+    
+    if (_sideFootDescription.talusHeight.length == 0)
+    {
+        _talusHeightTxt.text                = @" ";
+        _sideFootViewTalusHeightLbl.text    = @"Talus Height";
+    }
+    else
+    {
+        _talusHeightTxt.text                = [NSString stringWithFormat:@"%.2f\"",[_sideFootDescription.talusHeight floatValue]];
+        _sideFootViewTalusHeightLbl.text    = [NSString stringWithFormat:@"Talus Height : %.2f\"",[_sideFootDescription.talusHeight floatValue]];
+    }
+    
+    
+    if (_sideFootDescription.toeBoxHeight.length == 0)
+    {
+        _toeBoxHeightTxt.text               = @" ";
+        _sideFootViewToeHeightLbl.text      = @"Toe Height";
+    }
+    else
+    {
+        _toeBoxHeightTxt.text               = [NSString stringWithFormat:@"%.2f\"",[_sideFootDescription.toeBoxHeight floatValue]];
+        _sideFootViewToeHeightLbl.text      = [NSString stringWithFormat:@"Toe Height : %.2f\"",[_sideFootDescription.toeBoxHeight floatValue]];
+    }
+    
+    
+    if (_sideFootDescription.talusSlope.length == 0)
+    {
+        _talusSlopeTxt.text                 = @" ";
+        _sideFootViewSlopeLbl.text          = @"Talus Slope";
+    }
+    else
+    {
+        _talusSlopeTxt.text                 = [NSString stringWithFormat:@"%.2f",[_sideFootDescription.talusSlope floatValue]];
+        _sideFootViewSlopeLbl.text          = [NSString stringWithFormat:@"Talus Slope %.2f",[_sideFootDescription.talusSlope floatValue]];
+    }
+    
+    ////
+    
+    if (_frontFootDescription.men_US)
+    {
+        _mensUSLblTxt.text              =  _frontFootDescription.men_US;
+    }
+    if (_frontFootDescription.men_Euro)
+    {
+        _mensEuroLblTxt.text            =  _frontFootDescription.men_Euro;
+    }
+    if (_frontFootDescription.men_UK)
+    {
+        _mensUKLblTxt.text              =  _frontFootDescription.men_UK;
+    }
+    if (_frontFootDescription.women_US)
+    {
+        _womensLblTxt.text              =  _frontFootDescription.women_US;
+    }
+    if (_frontFootDescription.women_Euro)
+    {
+        _womensEuroLblTxt.text          =  _frontFootDescription.women_Euro;
+    }
+    if (_frontFootDescription.women_UK)
+    {
+        _womenUKLblTxt.text             =  _frontFootDescription.women_UK;
+    }
+}
+
+#pragma mark - Swipe Gesture Actions
+
+-(void)swipeRightAction
+{
+    _sideFootImageView.image    =    self.sideFootCroppedImage;
+    
+    [self enableRightArrowButton];
+    
+    [self showSideFootView];
+    [self hideFrontFootView];
+}
+
+-(void)swipeLeftAction
+{
+    _frontFootImageView.image   =     self.frontFootCroppedImage;
+    
+    [self enableLeftArrowButton];
+    
+    [self showFrontFootView];
+    [self hideSideFootView];
+}
+
+-(void)enableRightArrowButton
+{
+    [_leftArrowBtn setImage:[UIImage imageNamed:@"LeftArrowOFF"] forState:UIControlStateNormal];
+    _leftArrowBtn.userInteractionEnabled = NO;
+    
+    [_rightArrowBtn setImage:[UIImage imageNamed:@"RightArrowON"] forState:UIControlStateNormal];
+    _rightArrowBtn.userInteractionEnabled = YES;
+}
+
+-(void)enableLeftArrowButton
+{
+    [_leftArrowBtn setImage:[UIImage imageNamed:@"LeftArrowON"] forState:UIControlStateNormal];
+    _leftArrowBtn.userInteractionEnabled = YES;
+    
+    [_rightArrowBtn setImage:[UIImage imageNamed:@"RightArrowOFF"] forState:UIControlStateNormal];
+    _rightArrowBtn.userInteractionEnabled = NO;
+}
+
+-(void)notifiyServerWithString:(NSString *)string
+{
+    NSData   * postData           = [string dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSString * postLength         = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
+    
+    NSMutableURLRequest * request = [[NSMutableURLRequest alloc] init];
+    [request setURL:[NSURL URLWithString:@"http://35.160.0.102/return_status.php"]];
+    [request setHTTPMethod:@"POST"];
+    
+    [request addValue:postLength forHTTPHeaderField:@"Content-Length"];
+    [request setHTTPBody:postData];
+    
+    NSURLSessionTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable _data, NSURLResponse * _Nullable _response, NSError * _Nullable _error)
+    {
+        if (_error)
+        {
+            NSLog(@"notifiyServerWithString, Error : %@",_error.description);
+        }
+        if (_response)
+        {
+            NSString *responseString = [[NSString alloc] initWithData:_data encoding:NSASCIIStringEncoding];
+            NSLog(@"notifiyServerWithString, response : %@",responseString);
+        }
+    }];
+    
+    [task resume];
+}
+
+#pragma mark - Button Actions
+
+- (IBAction)backButtonAction:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)rightArrowAction:(id)sender
+{
+    [self swipeLeftAction];
+}
+
+- (IBAction)leftArrowAction:(id)sender
+{
+    [self swipeRightAction];
+}
+
+- (IBAction)shoePredictorButtonAction:(id)sender
+{
+    MatchesShoesViewController  *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MatchesShoesViewController"];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+
+
+////////////////////////////// HAAR /////////////////////
+-(void)showHAARFootSizeData
 {
     if (_frontFootDescription.footWidh.length == 0)
     {
@@ -283,95 +514,9 @@
     }
 }
 
-#pragma mark - Swipe Gesture Actions
 
--(void)swipeRightAction
-{
-    _sideFootImageView.image    =    self.sideFootCroppedImage;
-    
-    [self enableRightArrowButton];
-    
-    [self showSideFootView];
-    [self hideFrontFootView];
-}
 
--(void)swipeLeftAction
-{
-    _frontFootImageView.image   =     self.frontFootCroppedImage;
-    
-    [self enableLeftArrowButton];
-    
-    [self showFrontFootView];
-    [self hideSideFootView];
-}
 
--(void)enableRightArrowButton
-{
-    [_leftArrowBtn setImage:[UIImage imageNamed:@"LeftArrowOFF"] forState:UIControlStateNormal];
-    _leftArrowBtn.userInteractionEnabled = NO;
-    
-    [_rightArrowBtn setImage:[UIImage imageNamed:@"RightArrowON"] forState:UIControlStateNormal];
-    _rightArrowBtn.userInteractionEnabled = YES;
-}
 
--(void)enableLeftArrowButton
-{
-    [_leftArrowBtn setImage:[UIImage imageNamed:@"LeftArrowON"] forState:UIControlStateNormal];
-    _leftArrowBtn.userInteractionEnabled = YES;
-    
-    [_rightArrowBtn setImage:[UIImage imageNamed:@"RightArrowOFF"] forState:UIControlStateNormal];
-    _rightArrowBtn.userInteractionEnabled = NO;
-}
-
--(void)notifiyServerWithString:(NSString *)string
-{
-    NSData   * postData           = [string dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-    NSString * postLength         = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
-    
-    NSMutableURLRequest * request = [[NSMutableURLRequest alloc] init];
-    [request setURL:[NSURL URLWithString:@"http://35.160.0.102/return_status.php"]];
-    [request setHTTPMethod:@"POST"];
-    
-    [request addValue:postLength forHTTPHeaderField:@"Content-Length"];
-    [request setHTTPBody:postData];
-    
-    NSURLSessionTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable _data, NSURLResponse * _Nullable _response, NSError * _Nullable _error)
-                              {
-                                  if (_error)
-                                  {
-                                      NSLog(@"notifiyServerWithString, Error : %@",_error.description);
-                                  }
-                                  if (_response)
-                                  {
-                                      NSString *responseString = [[NSString alloc] initWithData:_data encoding:NSASCIIStringEncoding];
-                                      NSLog(@"notifiyServerWithString, response : %@",responseString);
-                                  }
-                              }];
-    
-    [task resume];
-}
-
-#pragma mark - Button Actions
-
-- (IBAction)backButtonAction:(id)sender
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (IBAction)rightArrowAction:(id)sender
-{
-    [self swipeLeftAction];
-}
-
-- (IBAction)leftArrowAction:(id)sender
-{
-    [self swipeRightAction];
-}
-
-- (IBAction)shoePredictorButtonAction:(id)sender
-{
-    MatchesShoesViewController  *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MatchesShoesViewController"];
-    [self.navigationController pushViewController:vc animated:YES];
-}
 
 @end

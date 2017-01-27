@@ -10,6 +10,7 @@
 #import "UIImage+Resize.h"
 #import "AppManager.h"
 #import "LinuxWebserviceManager.h"
+#import "FootDescription.h"
 
 #define linux_server_response_handler [LinuxServerResponseHandler sharedInstance]
 
@@ -17,8 +18,13 @@
 
 +(LinuxServerResponseHandler *)sharedInstance;
 
--(void)handleResponseForSideFoot:(NSData *)responseData block:(void (^)(NSArray *ba))boundedBoxArray errorMessage:(void(^)(NSString *))error;
--(void)handleResponseForFrontFoot:(NSData *)responseData block:(void (^)(NSArray *ba))boundedBoxArray errorMessage:(void(^)(NSString *))error;
+-(void)handleResponseForSideFoot:(NSData *)responseData block:(void (^)(FootDescription *))sideFootDescription errorMessage:(void(^)(NSString *))error;
+-(void)handleResponseForFrontFoot:(NSData *)responseData block:(void (^)(FootDescription *))frontFootDescription errorMessage:(void(^)(NSString *))error;
+
+//////////// HAAR /////////
+
+-(void)handleHAARResponseForSideFoot:(NSData *)responseData block:(void (^)(NSArray *ba))boundedBoxArray errorMessage:(void(^)(NSString *))error;
+-(void)handleHAARResponseForFrontFoot:(NSData *)responseData block:(void (^)(NSArray *ba))boundedBoxArray errorMessage:(void(^)(NSString *))error;
 
 @end
 
